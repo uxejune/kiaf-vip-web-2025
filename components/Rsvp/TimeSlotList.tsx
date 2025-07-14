@@ -34,19 +34,17 @@ interface Props {
     rsvp: Rsvp;
 }
 
+interface TimeSlotWithApplicants extends TimeSlot {
+  applicants: Applicant[];
+}
 
 export default function TimeSlotList({ rsvp }: Props) {
-
-
-    if (!rsvp.timeSlots) {
-        return (
-            <p>no time slots</p>
-        )
-    }
+    const { timeSlots: rawTimeSlots, post_id } = rsvp;
+    const timeSlots = rawTimeSlots ?? [];
 
     const [applicants, setApplicants] = useState<Applicant[]>([]);
-    const [timeSlotsState, setTimeSlotsState] = useState<TimeSlot[]>(
-      rsvp.timeSlots.map(ts => ({ ...ts, applicants: [] }))
+    const [timeSlotsState, setTimeSlotsState] = useState<TimeSlotWithApplicants[]>(
+      timeSlots.map(ts => ({ ...ts, applicants: [] }))
     );
 
     useEffect(() => {
@@ -55,7 +53,7 @@ export default function TimeSlotList({ rsvp }: Props) {
           const res = await fetch('/api/rsvp_register_list', {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ program_id: rsvp.post_id }),
+            body: JSON.stringify({ program_id: post_id }),
           });
           if (!res.ok) throw new Error('Failed to fetch applicants');
           const data: Applicant[] = await res.json();
@@ -65,9 +63,8 @@ export default function TimeSlotList({ rsvp }: Props) {
         }
       }
       fetchApplicants();
-    }, []);
+    }, [post_id]);
 
-    // Whenever applicants change, assign them into matching timeslots
     useEffect(() => {
       setTimeSlotsState(prev =>
         prev.map(ts => ({
@@ -77,7 +74,9 @@ export default function TimeSlotList({ rsvp }: Props) {
       );
     }, [applicants]);
 
-    //push applicant into rsvp.timeslot if timeslot.id is same with applicant.ts_id
+    if (timeSlots.length === 0) {
+        return <p>no time slots</p>;
+    }
 
     return (
         <div className="space-y-4">
@@ -85,34 +84,5 @@ export default function TimeSlotList({ rsvp }: Props) {
                 <TimeSlotItem timeSlot={timeSlot} key={timeSlot.id} />
             ))}         
         </div>
-
-        // <Table className='mb-4'>
-        //     <TableHeader>
-        //         <TableRow>
-        //             <TableHead>Date</TableHead>
-        //             <TableHead>Time</TableHead>
-        //             <TableHead>Capacity</TableHead>
-        //             <TableHead></TableHead>
-        //         </TableRow>
-        //     </TableHeader>
-        //     <TableBody>
-        //         {timeSlots.map((timeSlot) => (
-        //             <TableRow key={timeSlot.id}>
-        //                 <TableCell>
-        //                     {timeSlot.event_date.substring(2)}
-        //                 </TableCell>
-        //                 <TableCell>
-        //                     {timeSlot.start_time.substring(0, 5)}-{timeSlot.end_time.substring(0, 5)}
-        //                 </TableCell>
-        //                 <TableCell>
-        //                     {timeSlot.total_count} {timeSlot.companion === "1" && <Badge className="text-xs">Companion</Badge>}
-        //                 </TableCell>
-        //                 <TableCell>
-        //                     <TimeSlotDeleteButton timeSlot={timeSlot}/>
-        //                 </TableCell>
-        //             </TableRow>
-        //         ))}
-        //     </TableBody>
-        // </Table>
     )
 }
