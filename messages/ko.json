@@ -1,0 +1,41 @@
+{
+    "Index": {
+      "title": "헬로월드!"
+    },
+    "LogIn": {
+      "title": "로그인",
+      "emailLabel": "이메일",
+      "emailPlaceHolder": "이메일을 입력해 주세요.",
+      "passwordLabel": "패스워드",
+      "passwordPlaceHolder": "패스워드를 입력해 주세요"
+    },
+    "VipTicket": {
+      "entryInfoBefore4Sep": "오프닝 : 9월 4일 11:00",
+      "entryInfo4to7Sep": "마지막 입장 18:30 / 전시 종료 19:00",
+      "entryInfo8Sep": "마지막 입장 17:30 / 전시 종료 18:00",
+      "locationInfo": "코엑스 홀 A·B, 그랜드볼룸, 더 플라츠",
+      "friezeEntryInfo" : "프리즈 입장 15:00~",
+      "warningInfo": "타인에게 양도하지 마십시오",
+      "invitationText":"초대권을 발송해 게스트를 초대하세요.",
+      "guest":"동반인",
+      "appIntroText" : "VIP 전용 앱으로 Kiaf SEOUL을 더욱 풍성하게 즐기세요.",
+      "guestInvitationMessage" : "게스트 초대는 1일 1회 가능하며 (00시 기준), 새로운 초대장 발송 시 앞서 발송된 초대장은 무효화 됩니다.",
+      "guestInvitationMessage2nd" : "발송 후 게스트 정보 수정이 불가능하니 초대장을 받을 수 있는 전화번호가 맞는지 확인해주세요.",
+      "expiredOrWrongInvitation" : "초대장이 만료되어 더 이상 사용이 불가능합니다.\n초대처에 문의해 주세요.",
+      "iosStoreMessage": "앱스토어로 이동하시겠습니까?"
+    },
+    "GuestInviteForm": {
+      "formTitle": "Invite a Guest",
+      "formDescribtion": "발송 후 게스트 정보 수정이 불가능하니 초대장을 받을 수 있는 전화번호가 맞는지 확인해주세요.",
+      "guestInvitationTypeLable": "초청 방법을 선택해 주세요.",
+      "phone": "휴대폰",
+      "phoneValidationMessage":"휴대폰 번호를 확인해 주세요.",
+      "email": "이매일",
+      "emailValidationMessage":"이메일을 확인해 주세요.",
+      "phoneDescribtion": "동반인의 휴대폰번호를 입력해 주세요.",
+      "phoneDescription": "동반인의 휴대폰번호를 입력해 주세요.",
+      "emailDescription": "동반인의 이메일을 입력해 주세요",
+      "validationMessage": "내용을 입력해 주세요",
+      "submitButton": "초대"
+    }
+  }

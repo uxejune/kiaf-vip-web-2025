@@ -1,0 +1,40 @@
+{
+  "Index": {
+    "title": "Hello world!"
+  },
+  "LogIn": {
+    "title": "Log in",
+    "emailLabel": "Email",
+    "emailPlaceHolder": "Please enter email",
+    "passwordLabel": "Password",
+    "passwordPlaceHolder": "Please enter password"
+  },
+  "VipTicket": {
+    "entryInfoBefore4Sep": "Opening : Sep 4 11:00",
+    "entryInfo4to7Sep": "Last Entry 18:30 / Closing Time 19:00",
+    "entryInfo8Sep": "Last Entry 17:30 / Closing Time 18:00",
+    "locationInfo": "Coex  Hall A•B, Grand ballroom, the Platz",
+    "friezeEntryInfo": "Frieze Entry 15:00~",
+    "warningInfo": "Do not transfer to others",
+    "invitationText": "Send Invitations to Invite Guests.",
+    "guest": "Guest",
+    "appIntroText": "Enjoy Kiaf SEOUL with the VIP app.",
+    "guestInvitationMessage" : "Guests can be invited once per day (based on midnight). When a new invitation is sent, any previous invitations will be invalidated.",
+    "guestInvitationMessage2nd" : "Once sent, guest information cannot be modified. Please ensure the phone number provided for receiving the invitation is correct.",
+    "expiredOrWrongInvitation": "The invitation is either expired or invalid.",
+    "iosStoreMessage": "Would you like to go to the App Store?"
+  },
+  "GuestInviteForm": {
+    "formTitle": "Invite a Guest",
+    "formDescribtion": "Please ensure the phone number provided is correct as guest information cannot be modified after sending the invitation.",
+    "guestInvitationTypeLable": "Please select invitation method",
+    "phone": "Mobile number",
+    "phoneValidationMessage":"Please provide a valid mobile phone number",
+    "email": "Email",
+    "emailValidationMessage":"lease provide a proper email",
+    "phoneDescription": "Please provide guest's mobile phone number",
+    "emailDescription": "Please provide guest's email",
+    "validationMessage": "Required field is missing",
+    "submitButton": "Invite"
+  }
+}
