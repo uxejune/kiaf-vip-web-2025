@@ -1,4 +1,4 @@
-import VipList from '@/components/Vip/VipList';
+    import VipList from '@/components/Vip/VipList';
 import { decrypt } from '@/lib/cryption';
 import { Gallery } from '@/types/collections';
 import supabaseClient from "@/utils/supabase/supabaseClient"

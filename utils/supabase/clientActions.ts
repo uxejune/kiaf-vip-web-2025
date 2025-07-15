@@ -3,12 +3,14 @@
 import { DateLimitedVipInvitationInsert } from "@/types/collections";
 import { createClient } from "./client";
 
-export async function setVipDateLimited(code: string, date: Date): Promise<void> {
+export async function setVipDateLimited(code: string, date: string): Promise<void> {
 
     const insertData: DateLimitedVipInvitationInsert = {
-        date: date.toISOString().split('T')[0],
+        date: date,
         code: code
     }
+
+
     
     const supabase = await createClient();
 

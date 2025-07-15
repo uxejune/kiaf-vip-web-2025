@@ -18,12 +18,13 @@ import VipTicket from '@/components/Vip/VipTicket';
 import VipPartners from '@/components/Vip/VipPartners';
 import Image from 'next/image';
 import { getTranslations } from 'next-intl/server';
-import { DayType, dayTypeKeys } from '@/types/collections';
+import { DateLimitedVipInvitation, DayType, dayTypeKeys } from '@/types/collections';
 import { headers } from 'next/headers';
 import Link from 'next/link';
 import AppOpenButton from '@/components/Vip/AppOpenButton';
 import LocaleSwitch from '@/components/General/LocaleSwitch';
 import { TicketPercent } from 'lucide-react';
+import { createClient } from '@/utils/supabase/server';
 
 interface PageProps {
     params: {
@@ -96,8 +97,6 @@ export default async function Page({
 
     const encodedParameter = encodeURIComponent(u.toString());
 
-
-
     const ticketData = await vipTicketDetail(encodedParameter);
 
     if (!ticketData || !ticketData.status) {
@@ -108,6 +107,8 @@ export default async function Page({
             </div>
         );
     }
+
+
 
     const decryptedInvitationCode = decrypt(u);
 
@@ -147,6 +148,25 @@ export default async function Page({
     };
 
 
+
+
+
+    console.log('decrypted code:', decryptedInvitationCode);
+
+
+    //check date limit
+    const supabase = await createClient();
+
+    const { data: dateLimitedVipInvitation, error: errorDateLimitedVipInvitation } = await supabase
+        .from("dateLimitedVipInvitation")
+        .select("*")
+        .eq("code", decryptedInvitationCode)
+        .single();
+
+    const dateLimitedVipInvitationData: DateLimitedVipInvitation | null = dateLimitedVipInvitation ?? null;
+
+    console.log(dateLimitedVipInvitationData);
+
     return (
 
         <div className='flex sm:py-12 justify-center w-full max-sm:bg-black'>
@@ -164,6 +184,9 @@ export default async function Page({
                     ticketType="vip"
                     warningInfo={t("warningInfo")}
                 />
+
+                {dateLimitedVipInvitationData && <p className='text-center'><span className='font-bold'>{dateLimitedVipInvitationData.date}</span><br/> {t("1dayTicketMessage")}</p>}
+
                 {/* <VipPartners /> */}
                 <div className='px-7 w-full'>
                     <div className='border bg-background border-neutral-200 rounded-3xl p-5 flex flex-col gap-4'>
@@ -172,6 +195,7 @@ export default async function Page({
                                 <h4 className=' heading-4'>Guest</h4>
                                 {isGuestInvited ? <p className=''>{ticketData.guest_mobile ? ticketData.guest_mobile : ticketData.guest_email}</p> : null}
                                 <p className=''>{t("guestInvitationMessage")}</p>
+
                             </div>
 
                             {isGuestAllowed ? (

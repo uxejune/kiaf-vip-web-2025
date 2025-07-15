@@ -22,7 +22,8 @@
     "guestInvitationMessage" : "Guests can be invited once per day (based on midnight). When a new invitation is sent, any previous invitations will be invalidated.",
     "guestInvitationMessage2nd" : "Once sent, guest information cannot be modified. Please ensure the phone number provided for receiving the invitation is correct.",
     "expiredOrWrongInvitation": "The invitation is either expired or invalid.",
-    "iosStoreMessage": "Would you like to go to the App Store?"
+    "iosStoreMessage": "Would you like to go to the App Store?",
+    "1dayTicketMessage": "This ticket is valid for one-day admission."
   },
   "GuestInviteForm": {
     "formTitle": "Invite a Guest",

@@ -71,7 +71,7 @@ export default async function Page() {
 
     // merge dateLimited info into vipListData by matching barcode with code
     vipListData.forEach(vip => {
-        const match = dateLimitedVipInvitationData.find(item => item.code === vip.barcode);
+        const match = dateLimitedVipInvitationData.find(item => item.code === vip.invitation_code);
         if (match) {
             (vip as Vip).date_limit = match.date;
         }

@@ -110,7 +110,9 @@ export default function InviteVipButton({ userType = "admin", vipType, isInviteA
             } else {
                 try {
                     if (values.date) {
-                        await setVipDateLimited(res.barcode, values.date);
+                        // format date to YYYY-MM-DD to avoid timezone shifts
+                        const dateString = format(values.date, 'yyyy-MM-dd');
+                        await setVipDateLimited(res.invitation_code, dateString);
                     }
                     window.location.reload();
                 } catch (error) {
@@ -212,7 +214,7 @@ export default function InviteVipButton({ userType = "admin", vipType, isInviteA
                                         />
                                     </FormControl>
                                     <FormDescription>
-                                        Add + for non-Korean numbers.
+                                        Add + and the appropriate country code for numbers outside Korea.
                                     </FormDescription>
 
                                     <FormMessage />
@@ -307,4 +309,3 @@ export default function InviteVipButton({ userType = "admin", vipType, isInviteA
         </Dialog>
     )
 }
-
