@@ -15,13 +15,13 @@ import { z } from "zod";
 
 import { Button } from "@/components/ui/button"
 import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
+    Form,
+    FormControl,
+    FormDescription,
+    FormField,
+    FormItem,
+    FormLabel,
+    FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { useState } from "react";
@@ -30,15 +30,17 @@ import { createClient } from "@/utils/supabase/client";
 
 
 const formSchema = z.object({
-    quota:  z.number().min(0, { message: "Quota must be a number greater than or equal to 0" })
+    quota: z.number().min(0, { message: "Quota must be a number greater than or equal to 0" }),
+    singleQuota: z.number().min(0, { message: "Quota must be a number greater than or equal to 0" })
 })
 interface Props {
     partnerId: string;
     settedQuota?: number;
+    settedSingleQuota? : number;
 }
 
 
-export default function PartnerQuotaSetButton({partnerId,settedQuota}:Props){
+export default function PartnerQuotaSetButton({ partnerId, settedQuota, settedSingleQuota }: Props) {
 
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const supabase = createClient();
@@ -47,7 +49,8 @@ export default function PartnerQuotaSetButton({partnerId,settedQuota}:Props){
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            quota: settedQuota? settedQuota : 0,
+            quota: settedQuota ? settedQuota : 0,
+            singleQuota: settedSingleQuota ? settedSingleQuota : 0
         },
     })
 
@@ -56,10 +59,12 @@ export default function PartnerQuotaSetButton({partnerId,settedQuota}:Props){
         setIsLoading(true);
 
         const quota = values.quota;
+        const singleQuota = values.singleQuota;
 
         const quotaData = {
             id: partnerId,
-            quota: quota
+            quota: quota,
+            singleQuota: singleQuota
         }
 
         if (settedQuota) {
@@ -71,9 +76,9 @@ export default function PartnerQuotaSetButton({partnerId,settedQuota}:Props){
                 .eq('id', partnerId);
 
             if (error) {
-                console.error("Error inserting data:", error);
-                } else {
-   
+                console.error("Error updating data:", error);
+            } else {
+
 
                 //refresh the page
                 window.location.reload();
@@ -90,12 +95,12 @@ export default function PartnerQuotaSetButton({partnerId,settedQuota}:Props){
             if (error) {
                 console.error("Error inserting data:", error);
             } else {
-          
-                
+
+
                 //refresh the page
                 window.location.reload();
             }
-            
+
         }
 
         setIsLoading(false);
@@ -103,7 +108,7 @@ export default function PartnerQuotaSetButton({partnerId,settedQuota}:Props){
 
     }
 
-    return(
+    return (
 
         <Dialog>
             <DialogTrigger asChild>
@@ -125,17 +130,40 @@ export default function PartnerQuotaSetButton({partnerId,settedQuota}:Props){
                                 <FormItem>
                                     <FormLabel>Allocation*</FormLabel>
                                     <FormControl>
-                                        <Input type="number" placeholder="quota number" {...field} />
+                                        <Input
+                                            type="number"
+                                            placeholder="quota number"
+                                            {...field}
+                                            value={field.value ?? ''}
+                                            onChange={(e) => field.onChange(e.target.valueAsNumber)}
+                                        />
                                     </FormControl>
-                                    <FormDescription>
-                                        Please provide VIP&#39;s email<br/>
-
-                                    </FormDescription>
+                                
                                     <FormMessage />
                                 </FormItem>
                             )}
                         />
-                        <Button disabled={isLoading===true} type="submit">
+                        <FormField
+                            control={form.control}
+                            name="singleQuota"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Single Allocation</FormLabel>
+                                    <FormControl>
+                                        <Input
+                                            type="number"
+                                            placeholder="quota number"
+                                            {...field}
+                                            value={field.value ?? ''}
+                                            onChange={(e) => field.onChange(e.target.valueAsNumber)}
+                                        />
+                                    </FormControl>
+                                    
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        <Button disabled={isLoading === true} type="submit">
                             {
                                 // show loading... and disable button when submitting
                                 isLoading ? "Loading..." : "Set"

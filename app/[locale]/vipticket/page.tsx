@@ -185,47 +185,55 @@ export default async function Page({
                     warningInfo={t("warningInfo")}
                 />
 
-                {dateLimitedVipInvitationData && <p className='text-center'><span className='font-bold'>{dateLimitedVipInvitationData.date}</span><br/> {t("1dayTicketMessage")}</p>}
+                {dateLimitedVipInvitationData && <p className='text-center'><span className='font-bold'>{dateLimitedVipInvitationData.date}</span><br /> {t("1dayTicketMessage")}</p>}
 
                 {/* <VipPartners /> */}
+
                 <div className='px-7 w-full'>
                     <div className='border bg-background border-neutral-200 rounded-3xl p-5 flex flex-col gap-4'>
-                        <div className='flex items-center gap-4 max-[420px]:flex-col max-[420px]:items-start'>
-                            <div className='grow'>
-                                <h4 className=' heading-4'>Guest</h4>
-                                {isGuestInvited ? <p className=''>{ticketData.guest_mobile ? ticketData.guest_mobile : ticketData.guest_email}</p> : null}
-                                <p className=''>{t("guestInvitationMessage")}</p>
 
-                            </div>
+                        {ticketData.vip_tier === "1" &&
+                            <>
 
-                            {isGuestAllowed ? (
-                                <GuestInviteButton
-                                    invitationCode={decryptedInvitationCode}
-                                    formTitle={tForm("formTitle")}
-                                    formDescription={tForm("formDescribtion")}
-                                    guestInvitationTypeLable={tForm("guestInvitationTypeLable")}
-                                    phoneLabel={tForm("phone")}
-                                    phoneValidationMessage={tForm("phoneValidationMessage")}
-                                    emailLabel={tForm("email")}
-                                    emailValidationMessage={tForm("emailValidationMessage")}
-                                    phoneDescription={tForm("phoneDescription")}
-                                    emailDescription={tForm("emailDescription")}
-                                    validationMessage={tForm("validationMessage")}
-                                    submitButton={tForm("submitButton")}
-                                />
-                            ) : null
+                                <div className='flex items-center gap-4 max-[420px]:flex-col max-[420px]:items-start'>
+                                    <div className='grow'>
+                                        <h4 className=' heading-4'>Guest</h4>
+                                        {isGuestInvited ? <p className=''>{ticketData.guest_mobile ? ticketData.guest_mobile : ticketData.guest_email}</p> : null}
+                                        <p className=''>{t("guestInvitationMessage")}</p>
+                                    </div>
 
-                            }
+                                    {isGuestAllowed ? (
+                                        <GuestInviteButton
+                                            invitationCode={decryptedInvitationCode}
+                                            formTitle={tForm("formTitle")}
+                                            formDescription={tForm("formDescribtion")}
+                                            guestInvitationTypeLable={tForm("guestInvitationTypeLable")}
+                                            phoneLabel={tForm("phone")}
+                                            phoneValidationMessage={tForm("phoneValidationMessage")}
+                                            emailLabel={tForm("email")}
+                                            emailValidationMessage={tForm("emailValidationMessage")}
+                                            phoneDescription={tForm("phoneDescription")}
+                                            emailDescription={tForm("emailDescription")}
+                                            validationMessage={tForm("validationMessage")}
+                                            submitButton={tForm("submitButton")}
+                                        />
+                                    ) : null
+
+                                    }
 
 
+                                </div>
+                                <hr className='border-neutral-200' />
+                            </>
+                        }
 
-                        </div>
+
 
                         {isAppReleased ?
 
                             <>
 
-                                <hr className='border-neutral-200' />
+
 
                                 <div className='flex items-center gap-4 max-[420px]:flex-col max-[420px]:items-start'>
                                     <div className='grow'>

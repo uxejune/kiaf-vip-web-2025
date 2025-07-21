@@ -6,6 +6,7 @@ export async function POST(request: Request) {
 
 
     const urlencoded = new URLSearchParams();
+    urlencoded.append("id", data.id);
     urlencoded.append("program_id", data.program_id);
     urlencoded.append("event_date", data.event_date);
     urlencoded.append("start_time", data.start_time);

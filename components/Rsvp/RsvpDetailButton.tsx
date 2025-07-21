@@ -15,6 +15,7 @@ import ApplicantList from "./ApplicantsList";
 import RsvpEditButton from "./RsvpEditButton";
 import TimeSlotList from "./TimeSlotList";
 import AddTimeSlotButton from "./AddTimeSlotButton";
+import RsvpCloseBUtton from "./RsvpCloseButton";
 
 interface Props {
     rsvp: Rsvp
@@ -22,9 +23,9 @@ interface Props {
 
 export default function RsvpDetailButton({ rsvp }: Props) {
 
-    
 
-    
+
+
     return (
         <Sheet>
             <SheetTrigger asChild><Button variant={"outline"} size={"sm"}>Detail</Button></SheetTrigger>
@@ -38,7 +39,18 @@ export default function RsvpDetailButton({ rsvp }: Props) {
                 </SheetHeader>
 
                 <div className="p-4 space-y-4">
-                    <RsvpEditButton rsvp={rsvp} />
+
+                    <div className="flex gap-2">
+                        <RsvpEditButton rsvp={rsvp} />
+                        {rsvp.is_main == "1" &&
+                            <RsvpCloseBUtton rsvp={rsvp} />
+                        }
+
+
+                    </div>
+
+
+
                     <hr />
 
                     {rsvp.is_main == "1" ?
@@ -49,11 +61,11 @@ export default function RsvpDetailButton({ rsvp }: Props) {
                             <Card>
                                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                                     <CardTitle className="text-sm font-medium">
-                                        Total Capacity
+                                        Capacity
                                     </CardTitle>
                                 </CardHeader>
                                 <CardContent className="text-2xl">
-                                    {rsvp.total_count}
+                                    {rsvp.applicants == null ? 0 : rsvp.count} / {rsvp.total_count}
                                 </CardContent>
                             </Card>
 
@@ -69,11 +81,11 @@ export default function RsvpDetailButton({ rsvp }: Props) {
 
                         <div className="space-y-4">
 
-                            
+
 
                             <div className="flex items-center justify-between">
                                 <h2 className="text-xl font-bold">Time Slot list</h2>
-                                <AddTimeSlotButton rsvp={rsvp}/>
+                                <AddTimeSlotButton rsvp={rsvp} />
                             </div>
 
 

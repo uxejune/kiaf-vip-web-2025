@@ -17,6 +17,7 @@ import { vi } from "date-fns/locale";
 import { useState } from "react";
 import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
+import { encrypt } from "@/lib/cryption";
 
 
 interface Props {
@@ -27,6 +28,14 @@ interface Props {
 
 export default function VipDetail({ vip }: Props) {
     const [isLoading, setIsLoading] = useState(false);
+
+    const encryptedCode = encrypt(vip.invitation_code);
+
+    const handleTicketAccessClick = () => {
+
+
+        window.open(`../vipticket/information?u=${encryptedCode}`, '_blank');
+    };
 
     async function onResend() {
         setIsLoading(true);
@@ -63,7 +72,7 @@ export default function VipDetail({ vip }: Props) {
             <SheetContent className="w-[860px]">
                 <SheetHeader>
                     <Badge>
-                        {vip.vip_tier == "1" ? "Tier 1" : "Tier 2"}
+                        {vip.vip_tier === "1" ? "Normal" : "Single"}
                     </Badge>
                     <SheetTitle>{vip.email}</SheetTitle>
 
@@ -72,9 +81,17 @@ export default function VipDetail({ vip }: Props) {
 
                 <div className="flex flex-col p-4 space-y-8">
 
-                    <Button variant={"outline"} onClick={onResend} >
-                        {isLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : "Resend"}
-                    </Button>
+                    <div className="flex gap-2">
+                        <Button variant={"outline"} onClick={onResend} >
+                            {isLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : "Resend"}
+                        </Button>
+
+                        <Button  variant={"outline"} onClick={() => handleTicketAccessClick()}>
+                            Open Ticket
+                        </Button>
+                    </div>
+
+
 
                     {vip.mobile &&
                         <div>

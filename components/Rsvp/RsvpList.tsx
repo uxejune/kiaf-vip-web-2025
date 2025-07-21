@@ -142,7 +142,7 @@ export default function RsvpList({ rsvps, itemsPerPage }: Props) {
                                 <div className="flex gap-2 items-center">
                                     <Badge variant="secondary">Main</Badge>
                                     <p className="text-xs">
-                                        {rsvp.applicants == null ? 0 : rsvp.applicants?.length} / {rsvp.total_count} Applicants
+                                        {rsvp.applicants == null ? 0 : rsvp.count} / {rsvp.total_count} Applicants
                                     </p>
 
                                 </div>

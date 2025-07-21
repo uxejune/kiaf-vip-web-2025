@@ -125,16 +125,19 @@ export type Database = {
           created_at: string
           id: string
           quota: number
+          singleQuota: number | null
         }
         Insert: {
           created_at?: string
           id: string
           quota: number
+          singleQuota?: number | null
         }
         Update: {
           created_at?: string
           id?: string
           quota?: number
+          singleQuota?: number | null
         }
         Relationships: []
       }

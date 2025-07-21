@@ -64,6 +64,7 @@ export default function CreatedIdForm({ partners }: Props) {
         count: z.number().min(1, { message: "please enter at least 1 count" }),
         partnerId: z.string().min(3, { message: 'please select partner' }),
         offset: z.number().optional(),
+        tier: z.enum(["1", "2"]),
     });
 
     const form = useForm<z.infer<typeof formSchema>>({
@@ -72,11 +73,12 @@ export default function CreatedIdForm({ partners }: Props) {
             idPreFix: "",
             count: 0,
             partnerId: "",
+            tier: "1",
         },
     })
 
     function getRandomPassword() {
-        const characters = 'abcdefghijklmnopqrstuvwxyz0123456789';
+        const characters = 'abcdefghjkmnpqrstuvwxyz23456789';
         let result = '';
         const charactersLength = characters.length;
         for (let i = 0; i < 8; i++) {
@@ -96,7 +98,7 @@ export default function CreatedIdForm({ partners }: Props) {
 
     async function onSubmit(values: z.infer<typeof formSchema>) {
         setIsLoading(true);
-   
+
 
 
         //empty Created ID List
@@ -108,25 +110,32 @@ export default function CreatedIdForm({ partners }: Props) {
 
 
             //set offset
-            const offset = values.offset ?  values.offset : 0;
+            const offset = values.offset ? values.offset : 0;
 
 
-            const accountName = `${values.idPreFix}${padNumberWithZeros(i+offset+1)}`;
+            const accountName = `${values.idPreFix}${padNumberWithZeros(i + offset + 1)}`;
             const password = getRandomPassword();
             const email = `${accountName}@${values.idPreFix}kiafpartner.org`;
             let vipInvitation = false;
             let supabaseRegistration = false;
             let idCreation = false;
-            let accountId:string | null = null;
-            const vipId:string | null = null;
+            let accountId: string | null = null;
+            const vipId: string | null = null;
+            const vipTier: string = values.tier;
 
 
             //1. try to invite VIP
-            const inviteRes = await PartnerVipInvite(email, "",values.partnerId)
+            const inviteRes = await PartnerVipInvite(email, "", values.partnerId, vipTier)
+
+            console.log('invite data', {
+                email: email,
+                partnerId: values.partnerId,
+                vipTier: vipTier
+            })
 
             if (inviteRes.message == 402) {
                 //false to invite
-
+                console.log('fail to invite user', inviteRes)
             } else {
                 //success to invite
 
@@ -138,8 +147,8 @@ export default function CreatedIdForm({ partners }: Props) {
                 const createAccountRes = await createAccount(
                     accountName,
                     password,
-                    email, 
-                    0, 
+                    email,
+                    0,
                     "ko");
 
                 if (createAccountRes.status == false) {
@@ -153,7 +162,7 @@ export default function CreatedIdForm({ partners }: Props) {
                     //success to create the account
                     idCreation = true;
                     accountId = createAccountRes.user_id;
-                    
+
 
                     //3. try to regist into Supabase
 
@@ -165,6 +174,7 @@ export default function CreatedIdForm({ partners }: Props) {
                             password: password,
                             email: email,
                             partner_id: values.partnerId,
+                            tier: vipTier,
                         })
 
                     if (error) {
@@ -181,7 +191,7 @@ export default function CreatedIdForm({ partners }: Props) {
 
 
             // set account data after invitation
-            const accountData = {
+            const accountData: CreatedId = {
                 id: accountId,
                 name: accountName,
                 password: password,
@@ -189,7 +199,8 @@ export default function CreatedIdForm({ partners }: Props) {
                 partner_id: values.partnerId,
                 idCreation: idCreation,
                 supabaseRegistration: supabaseRegistration,
-                vipInvitation: vipInvitation
+                vipInvitation: vipInvitation,
+                tier: vipTier
             }
 
 
@@ -232,12 +243,20 @@ export default function CreatedIdForm({ partners }: Props) {
                                 <FormItem>
                                     <FormLabel>Count*</FormLabel>
                                     <FormControl>
-                                        <Input type="number" placeholder="0" {...field} />
+                                        <Input
+                                            type="number"
+                                            placeholder="0"
+                                            {...field}
+                                            value={field.value ?? ''}
+                                            onChange={(e) => field.onChange(e.target.valueAsNumber)}
+                                        />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
                             )}
                         />
+
+
 
                         <FormField
                             control={form.control}
@@ -269,12 +288,41 @@ export default function CreatedIdForm({ partners }: Props) {
                                 <FormItem>
                                     <FormLabel>Offset</FormLabel>
                                     <FormControl>
-                                        <Input type="number" placeholder="0" {...field} />
+                                        <Input
+                                            type="number"
+                                            placeholder="0"
+                                            {...field}
+                                            value={field.value ?? ''}
+                                            onChange={(e) => field.onChange(e.target.valueAsNumber)}
+                                        />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
                             )}
                         />
+
+                        <FormField
+                            control={form.control}
+                            name="tier"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Tier*</FormLabel>
+                                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                        <FormControl>
+                                            <SelectTrigger>
+                                                <SelectValue placeholder="Select tier" />
+                                            </SelectTrigger>
+                                        </FormControl>
+                                        <SelectContent>
+                                            <SelectItem value="1">Normal</SelectItem>
+                                            <SelectItem value="2">Single</SelectItem>
+                                        </SelectContent>
+                                    </Select>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+
                     </div>
 
                     <Button disabled={isLoading === true} type="submit">
@@ -294,6 +342,7 @@ export default function CreatedIdForm({ partners }: Props) {
                         <TableHead>Name</TableHead>
                         <TableHead>Password</TableHead>
                         <TableHead>Email</TableHead>
+                        <TableHead>Tier</TableHead>
                         <TableHead>ID Creation</TableHead>
                         <TableHead>Supabase Registration</TableHead>
                         <TableHead>VIP Invitation</TableHead>
@@ -315,6 +364,9 @@ export default function CreatedIdForm({ partners }: Props) {
                                 {createdId.email}
                             </TableCell>
                             <TableCell>
+                                {createdId.tier === "1" ? <Badge>Normal</Badge> : <Badge>Single</Badge> }
+                            </TableCell>
+                            <TableCell>
                                 {createdId.idCreation ? <Badge variant={"outline"}>Done</Badge> : <Badge>False</Badge>}
                             </TableCell>
                             <TableCell>
@@ -323,6 +375,7 @@ export default function CreatedIdForm({ partners }: Props) {
                             <TableCell>
                                 {createdId.vipInvitation ? <Badge variant={"outline"}>Done</Badge> : <Badge>False</Badge>}
                             </TableCell>
+
                         </TableRow>
                     ))}
                 </TableBody>

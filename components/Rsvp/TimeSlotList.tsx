@@ -35,7 +35,7 @@ interface Props {
 }
 
 interface TimeSlotWithApplicants extends TimeSlot {
-  applicants: Applicant[];
+    applicants: Applicant[];
 }
 
 export default function TimeSlotList({ rsvp }: Props) {
@@ -44,34 +44,34 @@ export default function TimeSlotList({ rsvp }: Props) {
 
     const [applicants, setApplicants] = useState<Applicant[]>([]);
     const [timeSlotsState, setTimeSlotsState] = useState<TimeSlotWithApplicants[]>(
-      timeSlots.map(ts => ({ ...ts, applicants: [] }))
+        timeSlots.map(ts => ({ ...ts, applicants: [] }))
     );
 
     useEffect(() => {
-      async function fetchApplicants() {
-        try {
-          const res = await fetch('/api/rsvp_register_list', {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ program_id: post_id }),
-          });
-          if (!res.ok) throw new Error('Failed to fetch applicants');
-          const data: Applicant[] = await res.json();
-          setApplicants(data);
-        } catch (error) {
-          console.error('Error fetching applicants:', error);
+        async function fetchApplicants() {
+            try {
+                const res = await fetch('/api/rsvp_register_list', {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ program_id: post_id }),
+                });
+                if (!res.ok) throw new Error('Failed to fetch applicants');
+                const data: Applicant[] = await res.json();
+                setApplicants(data);
+            } catch (error) {
+                console.error('Error fetching applicants:', error);
+            }
         }
-      }
-      fetchApplicants();
+        fetchApplicants();
     }, [post_id]);
 
     useEffect(() => {
-      setTimeSlotsState(prev =>
-        prev.map(ts => ({
-          ...ts,
-          applicants: applicants.filter(app => app.ts_id === ts.id),
-        }))
-      );
+        setTimeSlotsState(prev =>
+            prev.map(ts => ({
+                ...ts,
+                applicants: applicants.filter(app => app.ts_id === ts.id),
+            }))
+        );
     }, [applicants]);
 
     if (timeSlots.length === 0) {
@@ -81,8 +81,8 @@ export default function TimeSlotList({ rsvp }: Props) {
     return (
         <div className="space-y-4">
             {timeSlotsState.map((timeSlot) => (
-                <TimeSlotItem timeSlot={timeSlot} key={timeSlot.id} />
-            ))}         
+                <TimeSlotItem rsvpId={rsvp.post_id} timeSlot={timeSlot} key={timeSlot.id} />
+            ))}
         </div>
     )
 }

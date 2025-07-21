@@ -64,7 +64,7 @@ export default async function Page() {
 
     const partnerNQuotaData:Partner[] = partnerListData.map((partner: { user_id: string; }) => {
         const matchingQuota = quotaData!.find(quota => quota.id === partner.user_id);
-        return matchingQuota ? { ...partner, quota: matchingQuota.quota, allocationDate: matchingQuota.created_at } : partner;
+        return matchingQuota ? { ...partner, quota: matchingQuota.quota, singleQuota:matchingQuota.singleQuota , allocationDate: matchingQuota.created_at } : partner;
     });
 
     partnerNQuotaData.sort((a:Partner, b:Partner) => {
@@ -84,7 +84,7 @@ export default async function Page() {
                 <Aside userEmail={user.email || 'no account'} userRole={user.role!} />
                 <div className="p-4 w-full">
                     <h1 className="heading-1 pb-4">Partners</h1>
-                    <PartnerList partners={partnerNQuotaData} itemsPerPage={10}/>
+                    <PartnerList partners={partnerNQuotaData} itemsPerPage={20}/>
                 </div>
             </div>
         </div>

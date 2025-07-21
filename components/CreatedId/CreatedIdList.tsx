@@ -169,6 +169,7 @@ export default function CreatedIdList({ createdIds, itemsPerPage }: Props) {
                         <TableHead>Name</TableHead>
                         <TableHead>Password</TableHead>
                         <TableHead>Email</TableHead>
+                        <TableHead>Tier</TableHead>
                         <TableHead>Partner</TableHead>
                     </TableRow>
                 </TableHeader>
@@ -197,6 +198,9 @@ export default function CreatedIdList({ createdIds, itemsPerPage }: Props) {
                             </TableCell>
                             <TableCell>
                                 {createdId.email}
+                            </TableCell>
+                            <TableCell>
+                                {createdId.tier === "1" ? <Badge>Normal</Badge> : <Badge>Single</Badge> }
                             </TableCell>
                             
                             <TableCell>

@@ -149,6 +149,7 @@ export default function PartnerList({ partners, itemsPerPage }: Props) {
                         <TableHead>ID</TableHead>
                         <TableHead>Name</TableHead>
                         <TableHead>Allocation</TableHead>
+                        <TableHead>Single Allocation</TableHead>
                         <TableHead>Allocation Setting</TableHead>
                         <TableHead>partner page</TableHead>
                     </TableRow>
@@ -164,23 +165,29 @@ export default function PartnerList({ partners, itemsPerPage }: Props) {
                                 {partner.nickname}
 
                             </TableCell>
-                            
+
                             <TableCell>
 
-                                {partner.quota? partner.quota: null }
+                                {partner.quota ? partner.quota : 0}
 
                             </TableCell>
 
                             <TableCell>
 
-                                <PartnerQuotaSetButton partnerId={partner.user_id} settedQuota={partner.quota} />
+                                {partner.singleQuota ? partner.singleQuota : 0}
+
+                            </TableCell>
+
+                            <TableCell>
+
+                                <PartnerQuotaSetButton partnerId={partner.user_id} settedQuota={partner.quota} settedSingleQuota={partner.singleQuota} />
 
                             </TableCell>
 
                             <TableCell>
 
                                 <Button asChild size={"sm"} variant={"outline"} >
-                                    <Link  href={`../partner?p=${encrypt(partner.user_id)}`}>Move</Link>
+                                    <Link href={`../partner?p=${encrypt(partner.user_id)}`}>Move</Link>
                                 </Button>
 
                             </TableCell>

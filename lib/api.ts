@@ -161,11 +161,12 @@ export async function GalleryVipInvite(email: string, phone: string, galleryId: 
     }
 }
 
-export async function PartnerVipInvite(email: string, phone: string, partnerId: string) {
+export async function PartnerVipInvite(email: string, phone: string, partnerId: string, vipTier:string) {
     const requestBody = JSON.stringify({
         email: email,
         phone: phone,
-        partner: partnerId
+        partner: partnerId,
+        vip_tier: vipTier,
     });
 
 

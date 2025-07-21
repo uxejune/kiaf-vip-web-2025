@@ -124,7 +124,7 @@ export default function RsvpEditButton({ rsvp }: Props) {
             }
 
             const result = await res.json();
-            console.log("update reslt:", result);
+            // console.log("update reslt:", result);
 
         } catch (err) {
             console.error("API error:", err);

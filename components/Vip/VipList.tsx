@@ -266,7 +266,7 @@ export default function VipList({ vips, listType, itemsPerPage, isAdmin = false,
                                 : null}
 
                             <TableCell>
-                                <Badge  >{vip.vip_tier === "1" ? "Tier 1" : "Tier 2"}</Badge>
+                                <Badge  >{vip.vip_tier === "1" ? "Normal" : "Single"}</Badge>
                             </TableCell>
 
 
@@ -290,9 +290,9 @@ export default function VipList({ vips, listType, itemsPerPage, isAdmin = false,
                                 </TableCell>
                                 : null}
 
-                            <TableHead>
+                            <TableCell>
                                 <VipDetail vip={vip} />
-                            </TableHead>
+                            </TableCell>
 
                             {/* {isAdmin ?
                                 <TableCell>

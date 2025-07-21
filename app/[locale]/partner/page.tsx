@@ -144,6 +144,9 @@ export default async function Page({ searchParams }: { searchParams: Promise<{ p
 
                     <p>{isAllocated ? `${vipListData.length} of ${quotaData!.quota} Invited` : 'no allocation'}</p>
 
+                    <p>{isAllocated ? `Single ${vipListData.length} of ${quotaData!.singleQuota} Invited` : 'no allocation'}</p>
+                    
+
                     {isAllocated ?
 
                         <VipList vips={vipListData} listType='partner' itemsPerPage={10} userType='partner' isInviteAllowed={isInviteAllowed} partnerId={decryptedId} isAdmin={partner.nickname == "artifactstest08" } />
