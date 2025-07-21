@@ -182,7 +182,7 @@ export async function PartnerVipInvite(email: string, phone: string, partnerId: 
         const data = await res.json();
 
         return (data)
-
+  
     } catch (err) {
         console.log(err);
         return (err)

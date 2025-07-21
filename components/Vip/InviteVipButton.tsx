@@ -138,8 +138,6 @@ export default function InviteVipButton({ userType = "admin", vipType, isInviteA
             } else {
                 console.log('gallery id is not provided')
             }
-
-
             setIsLoading(false);
         } else if (userType == "partner") {
 
