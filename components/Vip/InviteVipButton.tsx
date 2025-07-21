@@ -145,7 +145,7 @@ export default function InviteVipButton({ userType = "admin", vipType, isInviteA
 
             if (partnerId) {
                 //run partner invite
-                const res = await PartnerVipInvite(email, phone, partnerId)
+                const res = await PartnerVipInvite(email, phone, partnerId,"1")
 
                 if (res.message == 402) {
                     console.log('already invited email');

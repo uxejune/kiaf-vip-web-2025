@@ -67,7 +67,7 @@ export default function DeskCreateVIPAccountButton({ isInviteAllowed, partnerId,
         const email = `${id}@kiaf.org`;
 
         //1. try to invite VIP
-        const inviteRes = await PartnerVipInvite(email, "", partnerId)
+        const inviteRes = await PartnerVipInvite(email, "", partnerId, "1")
 
         if (inviteRes.message == 402) {
             //false to invite

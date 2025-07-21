@@ -122,7 +122,7 @@ export type CreatedId = {
     idCreation?: boolean;
     supabaseRegistration?: boolean;
     vipInvitation?: boolean;
-    tier: string;
+    tier?: string;
 }
 
 export type Partner = {
