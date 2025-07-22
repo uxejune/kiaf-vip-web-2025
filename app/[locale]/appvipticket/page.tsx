@@ -159,7 +159,7 @@ export default async function Page({
                     {dateLimitedVipInvitationData && <p className='text-center'><span className='font-bold'>{dateLimitedVipInvitationData.date}</span><br /> {t("1dayTicketMessage")}</p>}
 
                     
-                    {/* <VipPartners /> */}
+                    
                     <div className="text-white text-center w-full">
                         <Image className='inline w-auto h-auto' src={'/imgs/kiaf_logo_black.png'} alt='kiaf logo' width={180} height={40} />
                     </div>
