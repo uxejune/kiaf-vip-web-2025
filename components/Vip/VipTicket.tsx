@@ -34,7 +34,7 @@ export default function VipTicket({qrCode,entryInfo,locationInfo,friezeEntryInfo
                         <Base64Image base64String={qrCode} />
                     </div>
                     <p>{entryInfo}</p>
-                    <p>{locationInfo}</p>
+                    <p>{warningInfo}</p>
                     { friezeEntryInfo?  <p>{friezeEntryInfo}</p> : null }                  
                 </div>
                 {/* <div className="bg-background flex justify-between ">
@@ -50,7 +50,7 @@ export default function VipTicket({qrCode,entryInfo,locationInfo,friezeEntryInfo
                     {ticketType == 'vip' ?  <h1 className="text-4xl font-semibold">VIP</h1> : null}
                     {ticketType == 'guest' ?  <h1 className="text-4xl font-semibold">GUEST</h1> : null}                   
 
-                    <p>{warningInfo}</p>
+                    
                 </div>
             </div>
         </div>
