@@ -19,7 +19,8 @@ import VipPartners from '@/components/Vip/VipPartners';
 import Image from 'next/image';
 import { getTranslations } from 'next-intl/server';
 import Spinner from '@/components/General/Spinner/Spinner';
-import { DayType, dayTypeKeys } from '@/types/collections';
+import { DateLimitedVipInvitation, DayType, dayTypeKeys } from '@/types/collections';
+import { createClient } from '@/utils/supabase/server';
 
 
 interface PageProps {
@@ -76,7 +77,7 @@ export default async function Page({
     const t = await getTranslations('VipTicket');
 
     if (!u) {
-        return(
+        return (
             <p>undefined code.</p>
         )
     }
@@ -114,7 +115,6 @@ export default async function Page({
     }
 
 
-
     const friezeEntryInfo = () => {
         if (today == "day1") {
             return t("friezeEntryInfo");
@@ -123,9 +123,28 @@ export default async function Page({
         }
     }
 
+    //check date limit
+    const supabase = await createClient();
+
+    const { data: dateLimitedVipInvitation, error: errorDateLimitedVipInvitation } = await supabase
+        .from("dateLimitedVipInvitation")
+        .select("*")
+        .eq("code", u)
+        .single();
+
+    const dateLimitedVipInvitationData: DateLimitedVipInvitation | null = dateLimitedVipInvitation ?? null;
+
+    // console.log(dateLimitedVipInvitationData);
+
     if (ticketData.status) {
         return (
-            <div className='flex justify-center  w-full h-screen bg-neutral-100'>
+            <div className='flex justify-center  w-full h-screen bg-neutral-100'
+                style={{
+                    backgroundImage: "url('/imgs/vip_ticket_bg.jpg')",
+                    backgroundSize: "cover",
+                    backgroundPosition: "center"
+                }}
+            >
 
                 <div className=" py-7 w-full max-w-[640px]  flex flex-col justify-center items-center gap-6">
                     <VipTicket
@@ -136,6 +155,10 @@ export default async function Page({
                         ticketType="vip"
                         warningInfo={t("warningInfo")}
                     />
+
+                    {dateLimitedVipInvitationData && <p className='text-center'><span className='font-bold'>{dateLimitedVipInvitationData.date}</span><br /> {t("1dayTicketMessage")}</p>}
+
+                    
                     {/* <VipPartners /> */}
                     <div className="text-white text-center w-full">
                         <Image className='inline w-auto h-auto' src={'/imgs/kiaf_logo_black.png'} alt='kiaf logo' width={180} height={40} />

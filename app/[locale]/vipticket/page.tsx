@@ -151,7 +151,7 @@ export default async function Page({
 
 
 
-    console.log('decrypted code:', decryptedInvitationCode);
+    // console.log('decrypted code:', decryptedInvitationCode);
 
 
     //check date limit
@@ -165,13 +165,19 @@ export default async function Page({
 
     const dateLimitedVipInvitationData: DateLimitedVipInvitation | null = dateLimitedVipInvitation ?? null;
 
-    console.log(dateLimitedVipInvitationData);
+    // console.log(dateLimitedVipInvitationData);
 
     return (
 
         <div className='flex sm:py-12 justify-center w-full max-sm:bg-black'>
 
-            <div className="bg-neutral-100 py-7 w-full max-w-[640px] sm:rounded-md flex flex-col gap-6">
+            <div className="bg-neutral-100 py-7 w-full max-w-[640px] sm:rounded-md flex flex-col gap-6"
+                style={{
+                    backgroundImage: "url('/imgs/vip_ticket_bg.jpg')",
+                    backgroundSize: "cover",
+                    backgroundPosition: "center"
+                }}
+            >
                 <div className='px-7 flex justify-end '>
                     <LocaleSwitch locale={locale} />
                 </div>
@@ -190,7 +196,7 @@ export default async function Page({
                 {/* <VipPartners /> */}
 
                 <div className='px-7 w-full'>
-                    <div className='border bg-background border-neutral-200 rounded-3xl p-5 flex flex-col gap-4'>
+                    <div className='border bg-background shadow rounded-3xl p-5 flex flex-col gap-4'>
 
                         {ticketData.vip_tier === "1" &&
                             <>
