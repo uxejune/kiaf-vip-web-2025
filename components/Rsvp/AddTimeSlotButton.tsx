@@ -95,6 +95,18 @@ export default function AddTimeSlotButton({ rsvp }: Props) {
         const paramCompanion = values.allowCompanion == true ? "1" : "0";
         const paramCapacity = values.capacity !== undefined ? String(values.capacity) : "0";
 
+        const apiBody = {
+            program_id: rsvp.post_id,
+            event_date: paramDate,
+            start_time: paramStartTime,
+            end_time: paramEndTime,
+            companion: paramCompanion,
+            total_count: paramCapacity,
+        }
+
+        console.log("api body :", apiBody);
+
+
         try {
             const res = await fetch("/api/timeslot_set", {
                 method: "POST",
@@ -118,7 +130,7 @@ export default function AddTimeSlotButton({ rsvp }: Props) {
 
             const result = await res.json();
             console.log("Timeslot added:", result);
-            window.location.reload();
+            // window.location.reload();
         } catch (err) {
             console.error("API error:", err);
         } finally {
