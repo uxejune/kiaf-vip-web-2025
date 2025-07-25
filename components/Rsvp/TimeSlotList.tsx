@@ -81,7 +81,7 @@ export default function TimeSlotList({ rsvp }: Props) {
     return (
         <div className="space-y-4">
             {timeSlotsState.map((timeSlot) => (
-                <TimeSlotItem rsvpId={rsvp.post_id} timeSlot={timeSlot} key={timeSlot.id} />
+                <TimeSlotItem rsvp={rsvp} timeSlot={timeSlot} key={timeSlot.id} />
             ))}
         </div>
     )

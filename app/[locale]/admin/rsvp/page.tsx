@@ -88,7 +88,7 @@ export default async function Page() {
                 <div className="p-4 w-full">
                     <h1 className="heading-1 pb-4">RSVP</h1>
 
-                    <RsvpList rsvps={mergedVipProgramListData} itemsPerPage={10} />
+                    <RsvpList rsvps={mergedVipProgramListData} itemsPerPage={20} />
 
                 </div>
             </div>

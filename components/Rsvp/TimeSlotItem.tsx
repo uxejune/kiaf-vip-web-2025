@@ -1,4 +1,4 @@
-import { Applicant, TimeSlot } from "@/types/collections";
+import { Applicant, Rsvp, TimeSlot } from "@/types/collections";
 import TimeSlotDeleteButton from "./TimeSlotDeleteButton";
 import CancelApplicantButton from "./CancelApplicantButton";
 import {
@@ -15,13 +15,14 @@ import { time } from "console";
 import { Badge } from "../ui/badge";
 import { Button } from "../ui/button";
 import TimeSlotEditButton from "./TimeSlotEditButton";
+import NotifyAttendeesButton from "./NotifyAttendeesButton";
 
 interface Props {
-    rsvpId: string;
+    rsvp: Rsvp;
     timeSlot: TimeSlot;
 }
 
-export default function TimeSlotItem({ timeSlot, rsvpId }: Props) {
+export default function TimeSlotItem({ timeSlot, rsvp }: Props) {
 
     const totalCount = (timeSlot.applicants ?? []).reduce(
         (sum, applicant) => sum + Number(applicant.with_companion ?? 0),
@@ -39,14 +40,21 @@ export default function TimeSlotItem({ timeSlot, rsvpId }: Props) {
                     </div>
                 </CardDescription>
                 <CardAction>
-                    <TimeSlotEditButton rsvpId={rsvpId} timeSlot={timeSlot} />
+                    <TimeSlotEditButton rsvpId={rsvp.post_id} timeSlot={timeSlot} />
                     <TimeSlotDeleteButton timeSlot={timeSlot} />
                 </CardAction>
             </CardHeader>
             <CardContent className="space-y-4">
 
+
+
+
+
                 {timeSlot.applicants && timeSlot.applicants.length > 0 &&
-                    <ApplicantList applicants={timeSlot.applicants} />
+                    <>
+                        <NotifyAttendeesButton rsvp={rsvp} />
+                        <ApplicantList applicants={timeSlot.applicants} />
+                    </>
                 }
 
             </CardContent>

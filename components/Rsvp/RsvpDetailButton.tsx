@@ -16,6 +16,7 @@ import RsvpEditButton from "./RsvpEditButton";
 import TimeSlotList from "./TimeSlotList";
 import AddTimeSlotButton from "./AddTimeSlotButton";
 import RsvpCloseBUtton from "./RsvpCloseButton";
+import NotifyAttendeesButton from "./NotifyAttendeesButton";
 
 interface Props {
     rsvp: Rsvp
@@ -43,7 +44,15 @@ export default function RsvpDetailButton({ rsvp }: Props) {
                     <div className="flex gap-2">
                         <RsvpEditButton rsvp={rsvp} />
                         {rsvp.is_main == "1" &&
-                            <RsvpCloseBUtton rsvp={rsvp} />
+                            <>
+                                <RsvpCloseBUtton rsvp={rsvp} />
+
+                                {rsvp.applicants?.length && rsvp.applicants?.length  > 0 &&
+                                    <NotifyAttendeesButton rsvp={rsvp} />
+                                }
+
+
+                            </>
                         }
 
 

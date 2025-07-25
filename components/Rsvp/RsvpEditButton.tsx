@@ -65,6 +65,7 @@ export default function RsvpEditButton({ rsvp }: Props) {
     async function onSubmit(values: z.infer<typeof formSchema>) {
         // Do something with the form values.
         // ✅ This will be type-safe and validated.
+        console.log(rsvp.post_id)
         console.log(values)
 
         setIsLoading(true);

@@ -135,11 +135,12 @@ export default function AddTimeSlotButton({ rsvp }: Props) {
 
             const result = await res.json();
             console.log("Timeslot added:", result);
-            // window.location.reload();
+            
         } catch (err) {
             console.error("API error:", err);
         } finally {
             setIsLoading(false);
+            window.location.reload();
         }
     }
 
