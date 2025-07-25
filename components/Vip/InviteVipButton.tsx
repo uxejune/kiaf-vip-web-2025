@@ -40,27 +40,9 @@ import { CalendarIcon, Loader2 } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Calendar } from "@/components/ui/calendar"
 import { format } from "date-fns"
-import { setVipDateLimited } from "@/utils/supabase/clientActions";
+import { setAdminVipIviteLog, setVipDateLimited } from "@/utils/supabase/clientActions";
 
-const formSchema = z.object({
-    email: z.string().trim().email({
-        message: "Please provide proper email",
-    }),
-    phone: z.string().refine(value => {
-        const cleaned = value.replace(/[\s\-]/g, ''); // 공백 및 하이픈 제거
-        const phoneRegex = /^(\+?\d{7,15})$/;
-        return cleaned === "" || phoneRegex.test(cleaned);
-    }, {
-        message: "Please provide a valid mobile phone number",
-    }).optional()
-        .or(z.literal('')),
-    tier: z.enum(["1", "2"], {
-        required_error: "Tier is required",
-        invalid_type_error: "Tier must be either 1 or 2",
-    }),
-    date: z.date().optional()
 
-})
 
 
 
@@ -70,13 +52,49 @@ interface Props {
     isInviteAllowed?: boolean;
     galleryId?: string;
     partnerId?: string;
+    userEmail?: string;
+
+    allocation?: number;
+    invited?: number;
+    singleAllocation?: number;
+    singleInvited?: number;
+
 }
 
-export default function InviteVipButton({ userType = "admin", vipType, isInviteAllowed = true, galleryId, partnerId }: Props) {
+export default function InviteVipButton({ userType = "admin", vipType, isInviteAllowed = true, galleryId, partnerId, userEmail, allocation, invited, singleAllocation, singleInvited }: Props) {
+
+    const formSchema = z.object({
+        email: z.string().trim().email({
+            message: "Please provide proper email",
+        }),
+        phone: z.string().refine(value => {
+            const cleaned = value.replace(/[\s\-]/g, ''); // 공백 및 하이픈 제거
+            const phoneRegex = /^(\+?\d{7,15})$/;
+            return cleaned === "" || phoneRegex.test(cleaned);
+        }, {
+            message: "Please provide a valid mobile phone number",
+        }).optional()
+            .or(z.literal('')),
+        tier: z.enum(["1", "2"], {
+            required_error: "Tier is required",
+            invalid_type_error: "Tier must be either 1 or 2",
+        }),
+        date: z.date().optional()
+    }).refine((data) => {
+        if (data.tier === "1" && allocation !== undefined && invited !== undefined) {
+            return allocation > invited;
+        }
+        if (data.tier === "2" && singleAllocation !== undefined && singleInvited !== undefined) {
+            return singleAllocation > singleInvited;
+        }
+        return true;
+    }, {
+        path: ["tier"],
+        message: "Allocation exceeded for the selected tier. Cannot invite more VIPs.",
+    });
 
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [isInvitedEmailError, setIsInvitedEmailError] = useState<boolean>(false);
-
 
 
     // 1. Define form.
@@ -92,7 +110,11 @@ export default function InviteVipButton({ userType = "admin", vipType, isInviteA
 
     // 2. Define a submit handler.
     async function onSubmit(values: z.infer<typeof formSchema>) {
+        console.log('values:',values)
+        
         setIsLoading(true);
+
+
 
         setIsInvitedEmailError(false)
         const email = values.email;
@@ -114,9 +136,12 @@ export default function InviteVipButton({ userType = "admin", vipType, isInviteA
                         const dateString = format(values.date, 'yyyy-MM-dd');
                         await setVipDateLimited(res.invitation_code, dateString);
                     }
+
+                    await setAdminVipIviteLog(res.invitation_code, userEmail ?? 'unknown');
+
                     window.location.reload();
                 } catch (error) {
-                    console.error("Failed to set limited date for VIP invitation:", error);
+                    console.error("Failed to set addtional vip data:", error);
                 }
             }
             setIsLoading(false);
@@ -125,7 +150,7 @@ export default function InviteVipButton({ userType = "admin", vipType, isInviteA
 
             if (galleryId) {
                 //run gallery invite
-                const res = await GalleryVipInvite(email, phone, galleryId)
+                const res = await GalleryVipInvite(email, phone, galleryId, tier)
 
                 if (res.message == 402) {
                     console.log('already invited email');
@@ -143,7 +168,7 @@ export default function InviteVipButton({ userType = "admin", vipType, isInviteA
 
             if (partnerId) {
                 //run partner invite
-                const res = await PartnerVipInvite(email, phone, partnerId,"1")
+                const res = await PartnerVipInvite(email, phone, partnerId, "1")
 
                 if (res.message == 402) {
                     console.log('already invited email');
@@ -224,7 +249,7 @@ export default function InviteVipButton({ userType = "admin", vipType, isInviteA
                             name="tier"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>VIP Tier</FormLabel>
+                                    <FormLabel>VIP Type</FormLabel>
                                     <Select onValueChange={field.onChange} defaultValue={field.value}>
                                         <FormControl>
                                             <SelectTrigger>
@@ -232,12 +257,12 @@ export default function InviteVipButton({ userType = "admin", vipType, isInviteA
                                             </SelectTrigger>
                                         </FormControl>
                                         <SelectContent>
-                                            <SelectItem value="1">Tier 1</SelectItem>
-                                            <SelectItem value="2">Tier 2</SelectItem>
+                                            <SelectItem value="1">Normal</SelectItem>
+                                            <SelectItem value="2">Single</SelectItem>
                                         </SelectContent>
                                     </Select>
                                     <FormDescription>
-                                        Choose VIP tier (1 or 2).
+                                        Choose VIP type (Normal or Single)
                                     </FormDescription>
                                     <FormMessage />
                                 </FormItem>

@@ -3,7 +3,7 @@ export async function vipInvite(email: string, phone: string, tier: "1" | "2" = 
     const requestBody = JSON.stringify({
         email: email,
         phone: phone,
-        tier: tier
+        vip_tier: tier
     });
 
     try {
@@ -134,11 +134,12 @@ export async function VipProgramRsvpAllocation(programId: string, capacity: numb
 }
 
 
-export async function GalleryVipInvite(email: string, phone: string, galleryId: string) {
+export async function GalleryVipInvite(email: string, phone: string, galleryId: string, vipTier: string) {
     const requestBody = JSON.stringify({
         email: email,
         phone: phone,
-        gallery: galleryId
+        gallery: galleryId,
+        vip_tier: vipTier
     });
 
 

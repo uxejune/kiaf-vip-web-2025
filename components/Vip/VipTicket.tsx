@@ -34,7 +34,7 @@ export default function VipTicket({ qrCode, entryInfo, locationInfo, friezeEntry
                     <div style={{ height: "auto", margin: "0 auto", maxWidth: 200, width: "100%" }}>
                         <Base64Image base64String={qrCode} />
                     </div>
-                    <p>{entryInfo}</p>
+                    {/* <p>{entryInfo}</p> */}
                     <p>{warningInfo}</p>
                     {friezeEntryInfo ? <p>{friezeEntryInfo}</p> : null}
                 </div>

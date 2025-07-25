@@ -73,7 +73,7 @@ export default function GalleryList({ galleries, itemsPerPage }: Props) {
             galleries.filter(
                 galleries =>
                     galleries.post_id.toLowerCase().includes(query) ||
-                    galleries.title.toLowerCase().includes(query) || 
+                    galleries.title?.toLowerCase().includes(query) || 
                     galleries.boothCode?.toLowerCase().includes(query)
             )
         );
@@ -151,6 +151,7 @@ export default function GalleryList({ galleries, itemsPerPage }: Props) {
                         <TableHead>Name</TableHead>
                         <TableHead>Status</TableHead>
                         <TableHead>VIP Allocation</TableHead>
+                        <TableHead>Single Allocation</TableHead>
                         <TableHead>Allocation Setting</TableHead>
                         <TableHead>Gallery Page</TableHead>
                         <TableHead>Booth code</TableHead>
@@ -178,8 +179,11 @@ export default function GalleryList({ galleries, itemsPerPage }: Props) {
                                 {gallery.quota ? gallery.quota : null}
                             </TableCell>
                             <TableCell>
+                                {gallery.singleQuota ? gallery.singleQuota : null}
+                            </TableCell>
+                            <TableCell>
                                 {/* <Button size={"sm"} variant={"outline"}>Set</Button> */}
-                                <QuotaSetButton galleryName={gallery.title} galleryId={gallery.post_id} settedQuota={gallery.quota} />
+                                <QuotaSetButton galleryName={gallery.title} galleryId={gallery.post_id} settedQuota={gallery.quota} settedSingleQuota={gallery.singleQuota} />
                             </TableCell>
                             <TableCell>
                                 <Button size={"sm"} variant={"outline"} onClick={() => handleMoveClick(gallery.post_id)}>

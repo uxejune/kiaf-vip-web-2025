@@ -119,7 +119,8 @@ export default async function Page({
 
     const isGuestInvited = ticketData.guest_invite_datetime != null;
     const guestInfo = ticketData.guest_mobile || ticketData.guest_email;
-    const isGuestAllowed = ticketData.guest_accept_datetime == null || hasPassedNextMidnight;
+    // const isGuestAllowed = ticketData.guest_accept_datetime == null || hasPassedNextMidnight;
+    const isGuestAllowed = true;
 
     const today: DayType = dateChecker();
 

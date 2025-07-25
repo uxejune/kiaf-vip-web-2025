@@ -78,9 +78,6 @@ export default async function Page() {
     });
 
 
-    // console.log('dateLimitedVipInvitationData', dateLimitedVipInvitationData);
-
-    // insert dateLimitedVipInvitationData's date into vipListData when match vipListData's barcode and dateLimitedVipInvitationData's code
 
     console.log('vipListData :', vipListData);
 
@@ -113,7 +110,7 @@ export default async function Page() {
                         </Button>
                     </div>
 
-                    <VipList vips={vipListData} listType='gallery' itemsPerPage={10} isAdmin />
+                    <VipList vips={vipListData} listType='gallery' itemsPerPage={10} isAdmin userEmail={user.email} />
 
                 </div>
             </div>

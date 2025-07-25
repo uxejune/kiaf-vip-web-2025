@@ -1,6 +1,6 @@
 "use client"
 
-import { DateLimitedVipInvitationInsert } from "@/types/collections";
+import { AdminVipInviteLogInsert, DateLimitedVipInvitationInsert } from "@/types/collections";
 import { createClient } from "./client";
 
 export async function setVipDateLimited(code: string, date: string): Promise<void> {
@@ -11,7 +11,7 @@ export async function setVipDateLimited(code: string, date: string): Promise<voi
     }
 
 
-    
+
     const supabase = await createClient();
 
 
@@ -24,6 +24,26 @@ export async function setVipDateLimited(code: string, date: string): Promise<voi
         throw error;
     }
 
+
+}
+
+
+export async function setAdminVipIviteLog(code: string, accout: string): Promise<void> {
+    const insertData: AdminVipInviteLogInsert = {
+        account: accout,
+        code: code
+    }
+
+    const supabase = await createClient();
+
+    const { error } = await supabase
+        .from('adminVipInviteLog')
+        .insert(insertData)
+
+    if (error) {
+        console.error("Error during insert adminVipInviteLog", error)
+        throw error;
+    }
 
 }
 

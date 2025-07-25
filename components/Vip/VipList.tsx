@@ -44,9 +44,15 @@ interface Props {
     galleryId?: string;
     partnerId?: string;
     vipDesk?: boolean;
+    userEmail?: string;
+
+    allocation?: number;
+    invited?: number;
+    singleAllocation?: number;
+    singleInvited?: number;
 }
 
-export default function VipList({ vips, listType, itemsPerPage, isAdmin = false, userType = "admin", isInviteAllowed = true, galleryId, partnerId, vipDesk }: Props) {
+export default function VipList({ vips, listType, itemsPerPage, isAdmin = false, userType = "admin", isInviteAllowed = true, galleryId, partnerId, vipDesk, userEmail, allocation, invited, singleAllocation, singleInvited }: Props) {
 
     let sortedVip: Vip[] = [];
     if (Array.isArray(vips)) {
@@ -198,9 +204,26 @@ export default function VipList({ vips, listType, itemsPerPage, isAdmin = false,
                     <CancelVipButton selectedVips={selectedData} />
                     {/* <Button disabled={ selectedData.length === 0 } variant="destructive">초대 취소</Button> */}
                     {listType == "gallery" ?
-                        <InviteVipButton userType={userType} vipType={listType} isInviteAllowed={isInviteAllowed} galleryId={galleryId} />
+                        <InviteVipButton
+                            userType={userType}
+                            vipType={listType}
+                            isInviteAllowed={isInviteAllowed}
+                            galleryId={galleryId}
+                            userEmail={userEmail}
+
+                            allocation={allocation}
+                            invited={invited}
+                            singleAllocation={singleAllocation}
+                            singleInvited={singleInvited}
+                            
+                        />
                         :
-                        <InviteVipButton userType={userType} vipType={listType} isInviteAllowed={isInviteAllowed} partnerId={partnerId} />
+                        <InviteVipButton
+                            userType={userType}
+                            vipType={listType}
+                            isInviteAllowed={isInviteAllowed}
+                            partnerId={partnerId}
+                        />
                     }
 
                 </div>
@@ -219,7 +242,7 @@ export default function VipList({ vips, listType, itemsPerPage, isAdmin = false,
                         <TableHead>이메일</TableHead>
                         <TableHead>전화번호</TableHead>
                         {isAdmin ? <TableHead>초대처</TableHead> : null}
-                        <TableHead>Tier</TableHead>
+                        <TableHead>Type</TableHead>
                         <TableHead>상태</TableHead>
                         <TableHead>동반인초대</TableHead>
                         {isAdmin ? <TableHead>Date Limit</TableHead> : null}
@@ -243,14 +266,15 @@ export default function VipList({ vips, listType, itemsPerPage, isAdmin = false,
                                 {vip.id}
                             </TableCell> */}
                             <TableCell>
-                                {userType == "admin" && (vip.gallery_title || vip.partner_title) ? "-" : vip.email}
-                                {/* {userType=="gallery" ? vip.email : null}
-                                {userType=="partner" ? vip.email : null} */}
+                                {vip.email}
+                                {/* {userType == "admin" && (vip.gallery_title || vip.partner_title) ? "-" : vip.email} */}
+
                             </TableCell>
                             <TableCell>
-                                {userType == "admin" && (vip.gallery_title || vip.partner_title) ? "-" : vip.mobile}
-                                {/* {userType=="gallery" ? vip.mobile : null}
-                                {userType=="partner" ? vip.mobile : null} */}
+
+                                {vip.mobile}
+                                {/* {userType == "admin" && (vip.gallery_title || vip.partner_title) ? "-" : vip.mobile} */}
+   
 
                             </TableCell>
                             {isAdmin && listType == "gallery" ?
@@ -294,24 +318,7 @@ export default function VipList({ vips, listType, itemsPerPage, isAdmin = false,
                                 <VipDetail vip={vip} />
                             </TableCell>
 
-                            {/* {isAdmin ?
-                                <TableCell>
-                                    <Button size={"sm"} variant={"outline"} onClick={() => handleTicketAccessClick(vip.invitation_code)}>
-                                        Move
-                                    </Button>
-                                </TableCell>
-                                : null}
 
-                            {isAdmin ?
-                                <TableCell>
-                                    <Button size={"sm"} variant={"outline"} onClick={() => handleWebTicketClick(vip.invitation_code)}>
-                                        임시티켓
-                                    </Button>
-                                </TableCell>
-                                : null} */}
-                            {/* <TableCell>
-                                <Button variant="outline" size="sm">More</Button>
-                            </TableCell> */}
                         </TableRow>
                     ))}
                 </TableBody>

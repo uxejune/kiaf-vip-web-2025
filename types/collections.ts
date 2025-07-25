@@ -142,6 +142,7 @@ export type Gallery = {
     title: string;
     payment?: string;
     quota?: number;
+    singleQuota?: number;
     boothCode?: string;
     allocationDate?: string;
 }
@@ -171,3 +172,5 @@ export type Artwork = {
     status: string;
 }
 
+export type AdminVipInviteLog = Database["public"]["Tables"]["adminVipInviteLog"]["Row"];
+export type AdminVipInviteLogInsert = Database["public"]["Tables"]["adminVipInviteLog"]["Insert"];

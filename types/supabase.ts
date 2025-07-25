@@ -57,6 +57,24 @@ export type Database = {
         }
         Relationships: []
       }
+      adminVipInviteLog: {
+        Row: {
+          account: string
+          code: string
+          created_at: string
+        }
+        Insert: {
+          account: string
+          code: string
+          created_at?: string
+        }
+        Update: {
+          account?: string
+          code?: string
+          created_at?: string
+        }
+        Relationships: []
+      }
       createdAccount: {
         Row: {
           created_at: string
@@ -65,6 +83,7 @@ export type Database = {
           name: string
           partner_id: string
           password: string
+          tier: string
         }
         Insert: {
           created_at?: string
@@ -73,6 +92,7 @@ export type Database = {
           name: string
           partner_id: string
           password: string
+          tier?: string
         }
         Update: {
           created_at?: string
@@ -81,6 +101,7 @@ export type Database = {
           name?: string
           partner_id?: string
           password?: string
+          tier?: string
         }
         Relationships: []
       }

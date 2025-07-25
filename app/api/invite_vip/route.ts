@@ -10,7 +10,7 @@ export async function POST(request: Request) {
     const urlencoded = new URLSearchParams();
     urlencoded.append("email", data.email);
     urlencoded.append("phone", data.phone);
-    
+    urlencoded.append("vip_tier", data.vip_tier);
 
 
 

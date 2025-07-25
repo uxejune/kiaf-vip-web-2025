@@ -62,61 +62,65 @@ export default function TimeSlotForm({ timeSlot, rsvpId }: Props) {
             date: timeSlot?.event_date ? new Date(timeSlot.event_date) : undefined,
             startTime: timeSlot?.start_time ? timeSlot?.start_time : "00:00:00",
             endTime: timeSlot?.end_time ? timeSlot?.end_time : "00:00:00",
-            allowCompanion: timeSlot?.companion ? timeSlot?.companion === "1" ? true : false : false ,
-            capacity: timeSlot?.total_count ? Number(timeSlot.total_count) :  0,
+            allowCompanion: timeSlot?.companion ? timeSlot?.companion === "1" ? true : false : false,
+            capacity: timeSlot?.total_count ? Number(timeSlot.total_count) : 0,
         },
     });
 
     async function onSubmit(values: z.infer<typeof formSchema>) {
-            console.log("Submitted values:", values);
-            console.log("timeSlot id: ",timeSlot?.id);
-            setIsLoading(true);
-    
+        console.log("Submitted values:", values);
+        console.log("timeSlot id: ", timeSlot?.id);
+        setIsLoading(true);
 
-            const paramDate = values.date.toISOString().split("T")[0];
-            const paramStartTime = values.startTime.slice(0, 5); // '00:00'
-            const paramEndTime = values.endTime.slice(0, 5); // '00:00'
-            const paramCompanion = values.allowCompanion == true ? "1" : "0";
-            const paramCapacity = values.capacity !== undefined ? String(values.capacity) : "0";
-    
-            try {
-                const res = await fetch("/api/timeslot_set", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({
-                        id: timeSlot?.id ?? undefined,
-                        program_id: rsvpId,
-                        event_date: paramDate,
-                        start_time: paramStartTime,
-                        end_time: paramEndTime,
-                        companion: paramCompanion,
-                        total_count: paramCapacity,
-                    }),
-                });
-    
-                if (!res.ok) {
-                    console.error("Failed to add timeslot:", res.status);
-                    return;
-                }
-    
-                const result = await res.json();
-                console.log("Timeslot added:", result);
-                window.location.reload();
-            } catch (err) {
-                console.error("API error:", err);
-            } finally {
-                setIsLoading(false);
+        const y = values.date.getFullYear();
+        const m = String(values.date.getMonth() + 1).padStart(2, "0");
+        const d = String(values.date.getDate()).padStart(2, "0");
+        const paramDate = `${y}${m}${d}`; // 결과 예: "20250802"
+
+        // const paramDate = values.date.toISOString().split("T")[0];
+        const paramStartTime = values.startTime.slice(0, 5); // '00:00'
+        const paramEndTime = values.endTime.slice(0, 5); // '00:00'
+        const paramCompanion = values.allowCompanion == true ? "1" : "0";
+        const paramCapacity = values.capacity !== undefined ? String(values.capacity) : "0";
+
+        try {
+            const res = await fetch("/api/timeslot_set", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    id: timeSlot?.id ?? undefined,
+                    program_id: rsvpId,
+                    event_date: paramDate,
+                    start_time: paramStartTime,
+                    end_time: paramEndTime,
+                    companion: paramCompanion,
+                    total_count: paramCapacity,
+                }),
+            });
+
+            if (!res.ok) {
+                console.error("Failed to add timeslot:", res.status);
+                return;
             }
+
+            const result = await res.json();
+            console.log("Timeslot added:", result);
+            window.location.reload();
+        } catch (err) {
+            console.error("API error:", err);
+        } finally {
+            setIsLoading(false);
         }
+    }
 
     return (
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
                 <p>
-                    {rsvpId} <br/>
-                    { timeSlot?.id }
+                    {rsvpId} <br />
+                    {timeSlot?.id}
                 </p>
 
                 <FormField

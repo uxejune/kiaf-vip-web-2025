@@ -11,6 +11,7 @@ export async function POST(request: Request) {
     urlencoded.append("email", data.email);
     urlencoded.append("phone", data.phone);
     urlencoded.append("gallery", data.gallery);
+    urlencoded.append("vip_tier", data.vip_tier);
 
 
     try{

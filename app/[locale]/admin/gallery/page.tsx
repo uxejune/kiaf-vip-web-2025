@@ -22,8 +22,6 @@ const galleryList = async () => {
         const res = await fetch("https://kiafvip.kiaf.org/api/admin/gallery", requestOptions);
         const data = await res.json();
         
-
-        
         return (data)
 
     } catch (err) {
@@ -82,7 +80,7 @@ export default async function Page() {
     const galleryNQuotaData:Gallery[] = galleryListData.map((gallery: { post_id: string; }) => {
         const matchingQuota = quotaData!.find(quota => quota.id === gallery.post_id);
         const matchingBoothCode = boothCodeData!.find(boothCode => boothCode.id === gallery.post_id );
-        return matchingQuota || matchingBoothCode  ? { ...gallery, quota: matchingQuota?.quota, allocationDate: matchingQuota?.created_at, boothCode: matchingBoothCode?.code } : gallery;
+        return matchingQuota || matchingBoothCode  ? { ...gallery, quota: matchingQuota?.quota, singleQuota: matchingQuota?.singleQuota , allocationDate: matchingQuota?.created_at, boothCode: matchingBoothCode?.code } : gallery;
     });
 
 

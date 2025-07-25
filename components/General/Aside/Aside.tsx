@@ -31,7 +31,7 @@ export default function Aside({ userEmail, userRole }: { userEmail: string, user
         // { url: '/admin/docent', title: 'Admin Docent', icon: ImageIcon, role: ["master", "admin"] },
         // { url: '/admin/docent-generate', title: 'Docent Generate', icon: ImageIcon, role: ["master"] },
         { url: '/admin/rsvp', title: 'RSVP', icon: PlayIcon, role: ["master", "admin"] },
-        // { url: '/admin/gallery', title: 'Galleries', icon: BoxModelIcon, role: ["master", "admin"] },
+        { url: '/admin/gallery', title: 'Galleries', icon: BoxModelIcon, role: ["master", "admin"] },
         { url: '/admin/partner', title: 'Partners', icon: BoxModelIcon, role: ["master", "admin"] },
         { url: '/admin/create-vip-id', title: 'ID Createad Partner VIP', icon: BoxModelIcon, role: ["master"] },
         // { url: '/admin/vip-desk', title: 'VIP Desk', icon: BoxModelIcon, role: ["master","admin","agent"] },

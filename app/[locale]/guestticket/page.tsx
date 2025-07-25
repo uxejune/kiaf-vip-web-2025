@@ -135,7 +135,15 @@ export default async function Page({
         return (
             <div className='flex sm:py-12 justify-center w-full  max-sm:h-screen max-sm:items-center max-sm:bg-neutral-100'>
 
-                <div className="bg-neutral-100 py-7 w-full max-w-[640px] sm:rounded-md  flex flex-col gap-6">
+                <div className="bg-neutral-100 py-7 w-full max-w-[640px] sm:rounded-md  flex flex-col gap-6
+                "
+                style={{
+                    backgroundImage: "url('/imgs/vip_ticket_bg.jpg')",
+                    backgroundSize: "cover",
+                    backgroundPosition: "center"
+                }}
+                
+                >
                     <VipTicket
                         qrCode={ticketData[0].qrcode}
                         entryInfo={entryInfo()}
@@ -144,6 +152,7 @@ export default async function Page({
                         ticketType="guest"
                         warningInfo={t("warningInfo")}
                     />
+                    
                     {/* <VipPartners/> */}
                     <div className="text-white text-center w-full">
                         <Image className='inline w-auto h-auto' src={'/imgs/kiaf_logo_black.png'} alt='kiaf logo' width={180} height={40} />

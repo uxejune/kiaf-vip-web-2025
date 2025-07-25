@@ -89,7 +89,12 @@ export default function AddTimeSlotButton({ rsvp }: Props) {
         console.log("Submitted values:", values);
         setIsLoading(true);
 
-        const paramDate = values.date.toISOString().split("T")[0];
+        const y = values.date.getFullYear();
+        const m = String(values.date.getMonth() + 1).padStart(2, "0");
+        const d = String(values.date.getDate()).padStart(2, "0");
+        const paramDate = `${y}${m}${d}`; // 결과 예: "20250802"
+
+        // const paramDate = values.date.toISOString().split("T")[0];
         const paramStartTime = values.startTime.slice(0, 5); // '00:00'
         const paramEndTime = values.endTime.slice(0, 5); // '00:00'
         const paramCompanion = values.allowCompanion == true ? "1" : "0";

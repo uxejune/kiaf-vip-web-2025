@@ -1,11 +1,11 @@
+import CanceledVipList from '@/components/Vip/CanceledVipList';
 import VipList from '@/components/Vip/VipList';
 import { decrypt, encrypt } from '@/lib/cryption';
 import { Gallery, Vip } from '@/types/collections';
 import supabaseClient from "@/utils/supabase/supabaseClient"
-import { Button } from "@/components/ui/button";
+import {  MoveLeft } from 'lucide-react';
 import Link from "next/link";
-
-
+import { Button } from "@/components/ui/button";
 
 interface PageProps {
     searchParams: {
@@ -26,8 +26,7 @@ export default async function Page({ searchParams }: { searchParams: Promise<{ g
     }
     const galleryId = decrypt(g);
 
-    console.log("gallery id:",galleryId)
-
+    console.log("galleryId :", galleryId)
 
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
@@ -66,9 +65,9 @@ export default async function Page({ searchParams }: { searchParams: Promise<{ g
         redirect: "follow" as RequestRedirect // Explicitly cast to RequestRedirect
     };
 
-    const vipList = async () => {
+    const cancelledVipList = async () => {
         try {
-            const res = await fetch('https://kiafvip.kiaf.org/api/gallery/vip_list', vipListRequestOptions)
+            const res = await fetch('https://kiafvip.kiaf.org/api/gallery/vip_cancellist', vipListRequestOptions)
             const data = await res.json()
 
             return (data)
@@ -96,26 +95,11 @@ export default async function Page({ searchParams }: { searchParams: Promise<{ g
 
 
     const authData = await galleryAuth();
-    const vipListData: Vip[] = await vipList();
-
-
-    const query = supabaseClient
-        .from('vipQuota')
-        .select('*', { count: 'exact' })
-        .eq('id', galleryId)
-        .single()
-
-    const { data: quotaData, error: quotaDataError } = await query;
+    const canceledVipListData = await cancelledVipList();
 
 
 
-    const quota: number = quotaData ? quotaData.quota : 0;
-    const singleQuota: number = quotaData ? quotaData.singleQuota : 0;
 
-    const invitedVipCount: number = vipListData.filter((vip) => vip.vip_tier === "1").length;
-    const invitedSingleVipCount: number = vipListData.filter((vip) => vip.vip_tier === "2").length;
-
-    const isInviteAllowed: boolean = quota > invitedVipCount || singleQuota > invitedSingleVipCount;
     const galleryListData = await galleryList();
 
 
@@ -131,42 +115,18 @@ export default async function Page({ searchParams }: { searchParams: Promise<{ g
     if (authData.status == true) {
         return (
 
-            <div className="flex min-h-screen flex-col">
-                <div className="border-b py-3 px-4">
-                    <h4>VIP Invitation Manager  | <span className='font-bold'>{gallery?.title}</span></h4>
-                </div>
+            <div className="flex min-h-screen flex-col p-4 space-y-4">
 
-
-
-                <div className="p-4 w-full space-y-4">
-
-
-                    <Button asChild>
-                        <Link href={`/gallery/canceled?g=${encrypt(galleryId)}`}>Canceled VIPs</Link>
+                <div className="flex items-center gap-2 ">
+                    <Button variant={"outline"} size={"icon"} asChild>
+                        <Link href={`/gallery?g=${encrypt(galleryId)}`}>
+                            <MoveLeft />
+                        </Link>
                     </Button>
-
-                    {quotaData ? <p>
-                        Normal Allocation: {quota} / Invited : {invitedVipCount} <br />
-                        Single Allocation: {singleQuota} / Invited : {invitedSingleVipCount}
-                    </p> : 'no allocation'}
-
-
-
-                    <VipList
-                        vips={vipListData} 
-                        listType='gallery' 
-                        itemsPerPage={10} 
-                        userType="gallery" 
-                        isInviteAllowed={isInviteAllowed} 
-                        galleryId={galleryId}
-
-                        allocation={quota}
-                        invited={invitedVipCount}
-                        singleAllocation={singleQuota}
-                        singleInvited={invitedSingleVipCount}
-                    />
+                    <h2 className="heading-2 ">Cancelled VIPs</h2>
                 </div>
 
+                <CanceledVipList canceledVips={canceledVipListData} itemsPerPage={10} listType={"gallery"} isAdmin />
 
             </div>
         )
