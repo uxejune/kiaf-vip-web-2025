@@ -3,7 +3,7 @@ import Aside from "@/components/General/Aside/Aside";
 import GalleryList from "@/components/AdminGallery/GalleryList";
 import supabaseClient from "@/utils/supabase/supabaseClient"
 import { Gallery } from "@/types/collections";
-
+import { Quota } from "@/types/collections";
 
 const myHeaders = new Headers();
 myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
@@ -21,7 +21,7 @@ const galleryList = async () => {
     try {
         const res = await fetch("https://kiafvip.kiaf.org/api/admin/gallery", requestOptions);
         const data = await res.json();
-        
+
         return (data)
 
     } catch (err) {
@@ -31,13 +31,13 @@ const galleryList = async () => {
     }
 };
 
-const accessibleRoles = ["master","admin"];
+const accessibleRoles = ["master", "admin"];
 
 export default async function Page() {
     const user = await checkUserAccount();
     const isAccessible = accessibleRoles.includes(user.role!);
 
-    if (!isAccessible){
+    if (!isAccessible) {
         return (
             <p>you don&#39;t have a proper role to access</p>
         )
@@ -51,7 +51,10 @@ export default async function Page() {
         .select('*', { count: 'exact' })
         .order('created_at', { ascending: false });
 
-    const {  data : quotaData, error: quotaDataError, count } = await query;
+    const { data: quotaData, error: quotaDataError, count } = await query;
+
+
+
 
 
 
@@ -67,7 +70,7 @@ export default async function Page() {
         .order('created_at', { ascending: false });
 
 
-    const { data : boothCodeData, error: boothCodeDataError, count: boothCodeDataCount } = await boothCodeQuery;
+    const { data: boothCodeData, error: boothCodeDataError, count: boothCodeDataCount } = await boothCodeQuery;
 
     if (boothCodeDataError) {
         console.error(boothCodeDataError);
@@ -77,24 +80,24 @@ export default async function Page() {
 
 
 
-    const galleryNQuotaData:Gallery[] = galleryListData.map((gallery: { post_id: string; }) => {
-        const matchingQuota = quotaData!.find(quota => quota.id === gallery.post_id);
-        const matchingBoothCode = boothCodeData!.find(boothCode => boothCode.id === gallery.post_id );
-        return matchingQuota || matchingBoothCode  ? { ...gallery, quota: matchingQuota?.quota, singleQuota: matchingQuota?.singleQuota , allocationDate: matchingQuota?.created_at, boothCode: matchingBoothCode?.code } : gallery;
+    const galleryNQuotaData: Gallery[] = galleryListData.map((gallery: { post_id: string; }) => {
+        const matchingQuota : Quota | undefined  = quotaData!.find(quota => quota.id === gallery.post_id);
+        const matchingBoothCode = boothCodeData!.find(boothCode => boothCode.id === gallery.post_id);
+        return matchingQuota || matchingBoothCode ? { ...gallery, quota: matchingQuota?.quota, singleQuota: matchingQuota?.singleQuota, allocationDate: matchingQuota?.created_at, boothCode: matchingBoothCode?.code } : gallery;
     });
 
 
 
 
-    const filteredGalleries:Gallery[] = galleryNQuotaData.filter(
-        (  gallery: { payment?: string; }) => gallery.payment === 'selected' || gallery.payment === 'cond-selected'
+    const filteredGalleries: Gallery[] = galleryNQuotaData.filter(
+        (gallery: { payment?: string; }) => gallery.payment === 'selected' || gallery.payment === 'cond-selected'
     );
-    
 
 
 
 
-    galleryNQuotaData.sort((a:Gallery, b:Gallery) => {
+
+    galleryNQuotaData.sort((a: Gallery, b: Gallery) => {
         const dateA = new Date(a.allocationDate || '1970-01-01').getTime();
         const dateB = new Date(b.allocationDate || '1970-01-01').getTime();
         return dateB - dateA;
@@ -109,11 +112,11 @@ export default async function Page() {
                 <h4>Admin Tool</h4>
             </div>
             <div className="flex flex-1">
-                <Aside userEmail={user.email || 'no account'} userRole={user.role!}/>
+                <Aside userEmail={user.email || 'no account'} userRole={user.role!} />
                 <div className="p-4 w-full">
                     <h1 className="heading-1 pb-4">Gallery</h1>
 
-                    <GalleryList galleries={filteredGalleries} itemsPerPage={10}/>
+                    <GalleryList galleries={filteredGalleries} itemsPerPage={10} />
 
                 </div>
             </div>

@@ -174,3 +174,10 @@ export type Artwork = {
 
 export type AdminVipInviteLog = Database["public"]["Tables"]["adminVipInviteLog"]["Row"];
 export type AdminVipInviteLogInsert = Database["public"]["Tables"]["adminVipInviteLog"]["Insert"];
+
+    export type Quota = {
+        created_at: string;
+        id: string;
+        quota?: number;
+        singleQuota?: number; // optional 로 정의
+    };

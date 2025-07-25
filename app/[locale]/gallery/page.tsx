@@ -1,6 +1,6 @@
 import VipList from '@/components/Vip/VipList';
 import { decrypt, encrypt } from '@/lib/cryption';
-import { Gallery, Vip } from '@/types/collections';
+import { Gallery, Quota, Vip } from '@/types/collections';
 import supabaseClient from "@/utils/supabase/supabaseClient"
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
@@ -107,10 +107,10 @@ export default async function Page({ searchParams }: { searchParams: Promise<{ g
 
     const { data: quotaData, error: quotaDataError } = await query;
 
-
+    const quotaValue: Quota | null = quotaData;
 
     const quota: number = quotaData ? quotaData.quota : 0;
-    const singleQuota: number = quotaData ? quotaData.singleQuota : 0;
+    const singleQuota: number = quotaValue?.singleQuota ?? 0;
 
     const invitedVipCount: number = vipListData.filter((vip) => vip.vip_tier === "1").length;
     const invitedSingleVipCount: number = vipListData.filter((vip) => vip.vip_tier === "2").length;
