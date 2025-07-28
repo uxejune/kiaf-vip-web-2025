@@ -171,7 +171,7 @@ export default function GalleryList({ galleries, itemsPerPage }: Props) {
                                 {
                                     gallery.payment == 'selected' ?
                                         <Badge variant="secondary">Approved</Badge>
-                                        : <Badge variant="outline">Condition</Badge>
+                                        : <Badge variant="outline">{gallery.payment}</Badge>
                                 }
 
                             </TableCell>

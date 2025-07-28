@@ -116,7 +116,7 @@ export default async function Page() {
                 <div className="p-4 w-full">
                     <h1 className="heading-1 pb-4">Gallery</h1>
 
-                    <GalleryList galleries={filteredGalleries} itemsPerPage={10} />
+                    <GalleryList galleries={galleryNQuotaData} itemsPerPage={10} />
 
                 </div>
             </div>
