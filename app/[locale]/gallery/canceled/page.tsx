@@ -126,7 +126,7 @@ export default async function Page({ searchParams }: { searchParams: Promise<{ g
                     <h2 className="heading-2 ">Cancelled VIPs</h2>
                 </div>
 
-                <CanceledVipList canceledVips={canceledVipListData} itemsPerPage={10} listType={"gallery"} isAdmin />
+                <CanceledVipList canceledVips={canceledVipListData} itemsPerPage={10} listType={"gallery"}  />
 
             </div>
         )

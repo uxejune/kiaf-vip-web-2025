@@ -191,7 +191,9 @@ export default function CanceledVipList({ canceledVips, itemsPerPage, isAdmin = 
                         <TableHead>전화번호</TableHead>
                         {isAdmin ? <TableHead>초대처</TableHead> : null}
                         <TableHead>Tier</TableHead>
-                        <TableHead></TableHead>
+                        {isAdmin && <TableHead></TableHead>}
+
+
 
 
                     </TableRow>
@@ -239,9 +241,13 @@ export default function CanceledVipList({ canceledVips, itemsPerPage, isAdmin = 
                                 <Badge>{vip.vip_tier === "1" ? "Tier 1" : "Tier 2"}</Badge>
                             </TableCell>
 
-                            <TableCell>
-                                <ReinviteCanceledVipButton canceledVip={vip} />
-                            </TableCell>
+                            {isAdmin &&
+                                <TableCell>
+                                    <ReinviteCanceledVipButton canceledVip={vip} />
+                                </TableCell>
+                            }
+
+
 
 
 
