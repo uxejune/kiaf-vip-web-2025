@@ -53,11 +53,6 @@ export default async function Page() {
 
     const { data: quotaData, error: quotaDataError, count } = await query;
 
-
-
-
-
-
     if (quotaDataError) {
         console.error(quotaDataError);
         return <div>Error loading quota</div>;
@@ -81,27 +76,31 @@ export default async function Page() {
 
 
     const galleryNQuotaData: Gallery[] = galleryListData.map((gallery: { post_id: string; }) => {
-        const matchingQuota : Quota | undefined  = quotaData!.find(quota => quota.id === gallery.post_id);
+        const matchingQuota: Quota | undefined = quotaData!.find(quota => quota.id === gallery.post_id);
         const matchingBoothCode = boothCodeData!.find(boothCode => boothCode.id === gallery.post_id);
         return matchingQuota || matchingBoothCode ? { ...gallery, quota: matchingQuota?.quota, singleQuota: matchingQuota?.singleQuota, allocationDate: matchingQuota?.created_at, boothCode: matchingBoothCode?.code } : gallery;
     });
-
-
-
-
-    const filteredGalleries: Gallery[] = galleryNQuotaData.filter(
-        (gallery: { payment?: string; }) => gallery.payment === 'selected' || gallery.payment === 'cond-selected'
-    );
-
-
-
-
 
     galleryNQuotaData.sort((a: Gallery, b: Gallery) => {
         const dateA = new Date(a.allocationDate || '1970-01-01').getTime();
         const dateB = new Date(b.allocationDate || '1970-01-01').getTime();
         return dateB - dateA;
     });
+
+    const filteredGalleries: Gallery[] = galleryNQuotaData.filter(
+        (gallery: { post_id: string }) => gallery.post_id.startsWith('5')
+    );
+
+
+    // const filteredGalleries: Gallery[] = galleryNQuotaData.filter(
+    //     (gallery: { payment?: string; }) => gallery.payment === 'selected' || gallery.payment === 'cond-selected'
+    // );
+
+
+
+
+
+
 
 
 
@@ -116,7 +115,7 @@ export default async function Page() {
                 <div className="p-4 w-full">
                     <h1 className="heading-1 pb-4">Gallery</h1>
 
-                    <GalleryList galleries={galleryNQuotaData} itemsPerPage={10} />
+                    <GalleryList galleries={filteredGalleries} itemsPerPage={10} />
 
                 </div>
             </div>

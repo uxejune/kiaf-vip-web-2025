@@ -179,5 +179,5 @@ export type AdminVipInviteLogInsert = Database["public"]["Tables"]["adminVipInvi
         created_at: string;
         id: string;
         quota?: number;
-        singleQuota?: number; // optional 로 정의
+        singleQuota?: number | null; // optional 로 정의
     };
