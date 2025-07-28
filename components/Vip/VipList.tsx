@@ -315,7 +315,7 @@ export default function VipList({ vips, listType, itemsPerPage, isAdmin = false,
                                 : null}
 
                             <TableCell>
-                                <VipDetail vip={vip} />
+                                <VipDetail vip={vip} isAdmin={isAdmin} />
                             </TableCell>
 
 

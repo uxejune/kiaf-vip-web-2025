@@ -21,12 +21,13 @@ import { encrypt } from "@/lib/cryption";
 
 
 interface Props {
-    vip: Vip
+    vip: Vip,
+    isAdmin?: boolean
 }
 
 
 
-export default function VipDetail({ vip }: Props) {
+export default function VipDetail({ vip, isAdmin = false }: Props) {
     const [isLoading, setIsLoading] = useState(false);
 
     const encryptedCode = encrypt(vip.invitation_code);
@@ -83,12 +84,16 @@ export default function VipDetail({ vip }: Props) {
 
                     <div className="flex gap-2">
                         <Button variant={"outline"} onClick={onResend} >
-                            {isLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : "Resend"}
+                            {isLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : "Resend Invitation"}
                         </Button>
 
-                        <Button  variant={"outline"} onClick={() => handleTicketAccessClick()}>
-                            Open Ticket
-                        </Button>
+                        {isAdmin &&
+                            <Button variant={"outline"} onClick={() => handleTicketAccessClick()}>
+                                Open Ticket
+                            </Button>
+                        }
+
+
                     </div>
 
 
@@ -100,21 +105,27 @@ export default function VipDetail({ vip }: Props) {
                         </div>
                     }
 
-                    <div>
-                        <h3 className="font-bold">Enter date</h3>
-                        {vip.enter_date ? <Badge variant={"secondary"}>{vip.enter_date}</Badge> : <Badge>None</Badge>}
-                    </div>
+                    {isAdmin &&
+                        <>
+                            <div>
+                                <h3 className="font-bold">Enter date</h3>
+                                {vip.enter_date ? <Badge variant={"secondary"}>{vip.enter_date}</Badge> : <Badge>None</Badge>}
+                            </div>
 
 
-                    <div>
-                        <h3 className="font-bold">Guest</h3>
-                        {vip.guest_email || vip.guest_mobile ? <div className="flex gap-1"><Badge variant={"outline"}>초대함</Badge><Badge variant={"secondary"}>{vip.guest_email || vip.guest_mobile}</Badge></div> : <Badge>None</Badge>}
-                    </div>
+                            <div>
+                                <h3 className="font-bold">Guest</h3>
+                                {vip.guest_email || vip.guest_mobile ? <div className="flex gap-1"><Badge variant={"outline"}>초대함</Badge><Badge variant={"secondary"}>{vip.guest_email || vip.guest_mobile}</Badge></div> : <Badge>None</Badge>}
+                            </div>
 
-                    <div>
-                        <h3 className="font-bold">Date Limit</h3>
-                        {vip.date_limit ? <Badge variant={"secondary"}>{vip.date_limit}</Badge> : <Badge>None</Badge>}
-                    </div>
+                            <div>
+                                <h3 className="font-bold">Date Limit</h3>
+                                {vip.date_limit ? <Badge variant={"secondary"}>{vip.date_limit}</Badge> : <Badge>None</Badge>}
+                            </div>
+                        </>
+                    }
+
+
 
                 </div>
             </SheetContent>
