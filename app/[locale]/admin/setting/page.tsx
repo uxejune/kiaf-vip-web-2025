@@ -4,6 +4,10 @@ import { createClient } from '@/utils/supabase/server'
 import Sidebar from '@/components/General/Sidebar'
 import DateEditButton from '@/components/Setting/DateEditButton';
 import Aside from '@/components/General/Aside/Aside';
+import { Banner } from '@/types/collections';
+import { Button } from '@/components/ui/button';
+import BannersList from '@/components/Banners/BannersList';
+import BannersListEditButton from '@/components/Banners/BannersListEditButton';
 
 
 export default async function Page() {
@@ -53,6 +57,86 @@ export default async function Page() {
     const settingData = await setting();
     // console.log('setting data:', settingData);
 
+    const topBanners: Banner[] = [];
+
+    // const bottomBanners: Banner[] = [
+    //     {
+    //         "id": "6",
+    //         "banner_type": "bottom",
+    //         "image_url": "https://static-edge.kiaf.org/banner/banner_20250729_032825_455_68883fd96f456.png",
+    //         "link": "https://kiaf.artspoon.io/en?utm_source=kiaf",
+    //         "sort_order": "1"
+    //     },
+    //     {
+    //         "id": "7",
+    //         "banner_type": "bottom",
+    //         "image_url": "https://static-edge.kiaf.org/banner/banner_20250729_032838_667_68883fe6a2de2.png",
+    //         "link": "https://kiaf.artspoon.io/en?utm_source=kiaf",
+    //         "sort_order": "2"
+    //     }
+    // ];
+
+
+
+    const topBannerUrlencoded = new URLSearchParams();
+
+    topBannerUrlencoded.append("type", "top");
+
+    const topBannerRequestOptions: RequestInit = {
+        method: "POST",
+        headers: myHeaders,
+        body: topBannerUrlencoded,
+        redirect: "follow" as RequestRedirect // Explicitly cast to RequestRedirect
+    };
+
+    const tomBanners = async () => {
+
+        try {
+            const res = await fetch("https://kiafvip.kiaf.org/api/admin/banner_list", topBannerRequestOptions);
+            const data = await res.json();
+            return (data)
+
+        } catch (err) {
+            console.log(err);
+            return (err)
+        }
+
+    };
+
+
+    // Fetch top banners data
+    const topBannersData: Banner[] = await tomBanners();
+
+
+    const bottomBannerUrlencoded = new URLSearchParams();
+
+    bottomBannerUrlencoded.append("type", "bottom");
+
+    const bottomBannerRequestOptions: RequestInit = {
+        method: "POST",
+        headers: myHeaders,
+        body: bottomBannerUrlencoded,
+        redirect: "follow" as RequestRedirect // Explicitly cast to RequestRedirect
+    };
+
+    const bottomBanners = async () => {
+
+        try {
+            const res = await fetch("https://kiafvip.kiaf.org/api/admin/banner_list", bottomBannerRequestOptions);
+            const data = await res.json();
+            return (data)
+
+        } catch (err) {
+            console.log(err);
+            return (err)
+        }
+
+    }
+
+    // Fetch bottom banners data
+    const bottomBannersData: Banner[] = await bottomBanners();
+
+    // console.log("bottomBannersData",bottomBannersData);
 
     return (
         <div className="flex min-h-screen flex-col">
@@ -133,6 +217,34 @@ export default async function Page() {
                         ) : (
                             <p className="mt-4">Art Fair date data could not be retrieved.</p>
                         )}
+
+                        <div className="mt-4 p-4 border rounded space-y-4">
+                            <h2 className="text-lg font-bold">Banners</h2>
+
+                            <div className='flex items-center gap-4'>
+                                <h3 className="font-bold">Top</h3>
+                                 <BannersListEditButton initialBanners={topBannersData} type={"top"} />
+                            </div>
+
+                            {topBannersData.length > 0 ? <BannersList banners={topBannersData} /> :
+                                <p className='text-sm text-neutral-500'>
+                                    There are no top banners set.
+                                </p>}
+
+
+                            <hr />
+
+                            <div className='flex items-center gap-4'>
+                                <h3 className="font-bold">Bottom</h3>
+                                <BannersListEditButton initialBanners={bottomBannersData} type={"bottom"} />
+                            </div>
+
+                            {bottomBannersData.length > 0 ? <BannersList banners={bottomBannersData} /> :
+                                <p className='text-sm text-neutral-500'>
+                                    There are no bottom banners set.
+                                </p>}
+
+                        </div>
 
                     </div>
 

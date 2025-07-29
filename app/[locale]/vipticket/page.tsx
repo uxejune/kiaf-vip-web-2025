@@ -179,7 +179,7 @@ export default async function Page({
                     backgroundPosition: "center"
                 }}
             >
-                <div className='px-7 flex justify-end '>
+                <div className='px-7 flex justify-end text-black '>
                     <LocaleSwitch locale={locale} />
                 </div>
 

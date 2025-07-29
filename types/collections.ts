@@ -113,10 +113,10 @@ export type GuestInvitationTypes = typeof guestInvitationTypeKeys[keyof typeof g
 
 export type CreatedId = {
     id: string | null;
-    vip_id?:string | null;
+    vip_id?: string | null;
     name: string;
     password: string;
-    email:string;
+    email: string;
     partner_id: string;
     partner_name?: string | null;
     idCreation?: boolean;
@@ -175,9 +175,19 @@ export type Artwork = {
 export type AdminVipInviteLog = Database["public"]["Tables"]["adminVipInviteLog"]["Row"];
 export type AdminVipInviteLogInsert = Database["public"]["Tables"]["adminVipInviteLog"]["Insert"];
 
-    export type Quota = {
-        created_at: string;
-        id: string;
-        quota?: number;
-        singleQuota?: number | null; // optional 로 정의
-    };
+export type Quota = {
+    created_at: string;
+    id: string;
+    quota?: number;
+    singleQuota?: number | null; // optional 로 정의
+};
+
+export type Banner = {
+    id: string;
+    banner_type: string;
+    image_url: string;
+    link: string;
+    sort_order: string;
+    closeDate?: string;
+    image_file?: File;
+}

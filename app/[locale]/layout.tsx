@@ -21,7 +21,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Kiaf VIP",
-  description: "Kiaf VIP Web",
+  description: "Kiaf VIP Web"
 };
 
 export default async function RootLayout({
