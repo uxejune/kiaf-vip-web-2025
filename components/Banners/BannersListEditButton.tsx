@@ -28,6 +28,7 @@ interface Props {
 }
 
 export default function BannersListEditButton({ initialBanners, type }: Props) {
+    const [sheetOpen, setSheetOpen] = useState<boolean>(false);
 
     const reindex = (list: Banner[]): Banner[] =>
         list.map((item, i) => ({
@@ -197,7 +198,7 @@ export default function BannersListEditButton({ initialBanners, type }: Props) {
     };
 
     return (
-        <Sheet>
+        <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
             <SheetTrigger asChild><Button variant={"outline"} size={"sm"}>Edit</Button></SheetTrigger>
             <SheetContent className="w-[860px]">
                 <SheetHeader>
@@ -251,9 +252,8 @@ export default function BannersListEditButton({ initialBanners, type }: Props) {
                     </div>
 
                     <div className="flex gap-2">
-                        <Button variant={"outline"}>Cancel</Button>
+                        <Button variant={"outline"} onClick={() => setSheetOpen(false)}>Cancel</Button>
                         <Button onClick={handleSave} disabled={!hasChanges}>Save</Button>
-
                     </div>
 
                 </div>

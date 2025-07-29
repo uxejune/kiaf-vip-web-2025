@@ -23,9 +23,16 @@ export default function AddBannerDialog({ onAdd, nextSortOrder }: AddBannerDialo
     const [preview, setPreview] = useState<string | null>(null);
     const [url, setUrl] = useState<string>("");
     const [open, setOpen] = useState<boolean>(false);
+    const [error, setError] = useState<string | null>(null);
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const selected = e.target.files?.[0] || null;
+        if (selected && selected.size > 1024 * 1024) {
+            setError("파일 크기는 1MB 이내여야 합니다.");
+            return;
+        } else {
+            setError(null);
+        }
         if (selected) {
             setFile(selected);
             setPreview(URL.createObjectURL(selected));
@@ -35,6 +42,12 @@ export default function AddBannerDialog({ onAdd, nextSortOrder }: AddBannerDialo
     const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
         e.preventDefault();
         const dropped = e.dataTransfer.files?.[0] || null;
+        if (dropped && dropped.size > 1024 * 1024) {
+            setError("파일 크기는 1MB 이내여야 합니다.");
+            return;
+        } else {
+            setError(null);
+        }
         if (dropped) {
             setFile(dropped);
             setPreview(URL.createObjectURL(dropped));
@@ -102,6 +115,7 @@ export default function AddBannerDialog({ onAdd, nextSortOrder }: AddBannerDialo
                         onChange={handleFileChange}
                     />
                 </div>
+                {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
                 <Input
                     placeholder="Banner link URL"
                     value={url}
@@ -113,7 +127,7 @@ export default function AddBannerDialog({ onAdd, nextSortOrder }: AddBannerDialo
                     <Button variant="ghost" onClick={() => setOpen(false)}>
                         Cancel
                     </Button>
-                    <Button disabled={!preview || !url.trim()} onClick={handleAdd}>
+                    <Button disabled={!preview || !url.trim() || !!error} onClick={handleAdd}>
                         Add
                     </Button>
                 </DialogFooter>
