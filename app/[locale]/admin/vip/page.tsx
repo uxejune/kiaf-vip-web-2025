@@ -7,7 +7,7 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { createClient } from "@/utils/supabase/server";
-import { DateLimitedVipInvitation, Vip } from "@/types/collections";
+import { AdminVipInviteLog, DateLimitedVipInvitation, Vip } from "@/types/collections";
 
 //fetching VIP list
 
@@ -65,15 +65,29 @@ export default async function Page() {
         .from("dateLimitedVipInvitation")
         .select("*");
 
-    
 
-    const dateLimitedVipInvitationData : DateLimitedVipInvitation[] = dateLimitedVipInvitation ?? [];
+    const { data: adminVipInviteLog, error: errorAdminVipInviteLog } = await supabase
+        .from("adminVipInviteLog")
+        .select("*");
+
+
+    const dateLimitedVipInvitationData: DateLimitedVipInvitation[] = dateLimitedVipInvitation ?? [];
+
+    const adminVipInviteLogData: AdminVipInviteLog[] = adminVipInviteLog ?? []
 
     // merge dateLimited info into vipListData by matching barcode with code
     vipListData.forEach(vip => {
         const match = dateLimitedVipInvitationData.find(item => item.code === vip.invitation_code);
         if (match) {
             (vip as Vip).date_limit = match.date;
+        }
+    });
+
+    // merge admin invite log info into vipListData by matching barcode with code
+    vipListData.forEach(vip => {
+        const logMatch = adminVipInviteLogData.find(log => log.code === vip.invitation_code);
+        if (logMatch) {
+            (vip as Vip).invited_by = logMatch.account;
         }
     });
 
@@ -108,6 +122,14 @@ export default async function Page() {
                         <Button asChild>
                             <Link href={"/admin/vip/canceled"}>Canceled VIPs</Link>
                         </Button>
+
+                        {user.role === "master" &&
+                            <Button asChild variant={"outline"}>
+                                <Link href={"/admin/vip/bulk_invite"}>Bulk Invite VIPs</Link>
+                            </Button>
+                        }
+
+
                     </div>
 
                     <VipList vips={vipListData} listType='gallery' itemsPerPage={10} isAdmin userEmail={user.email} />

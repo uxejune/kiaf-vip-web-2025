@@ -1,5 +1,5 @@
 import VipList from '@/components/Vip/VipList';
-import { decrypt, encrypt } from '@/lib/cryption';
+import { decrypt, decrypt2nd, encrypt } from '@/lib/cryption';
 import { Gallery, Quota, Vip } from '@/types/collections';
 import supabaseClient from "@/utils/supabase/supabaseClient"
 import { Button } from "@/components/ui/button";
@@ -26,8 +26,11 @@ export default async function Page({ searchParams }: { searchParams: Promise<{ g
     }
     const galleryId = decrypt(g);
 
-    console.log("gallery id:",galleryId)
+    // const galleryIdV2 = decrypt2nd(g);
 
+
+    // console.log("gallery id:", galleryId)
+    // console.log("gallery id v2:", galleryIdV2)
 
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
@@ -153,11 +156,11 @@ export default async function Page({ searchParams }: { searchParams: Promise<{ g
 
 
                     <VipList
-                        vips={vipListData} 
-                        listType='gallery' 
-                        itemsPerPage={10} 
-                        userType="gallery" 
-                        isInviteAllowed={isInviteAllowed} 
+                        vips={vipListData}
+                        listType='gallery'
+                        itemsPerPage={10}
+                        userType="gallery"
+                        isInviteAllowed={isInviteAllowed}
                         galleryId={galleryId}
 
                         allocation={quota}

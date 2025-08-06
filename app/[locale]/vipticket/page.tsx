@@ -108,6 +108,7 @@ export default async function Page({
         );
     }
 
+    console.log('ticket data:',ticketData);
 
 
     const decryptedInvitationCode = decrypt(u);

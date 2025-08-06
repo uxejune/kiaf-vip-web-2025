@@ -26,6 +26,7 @@ export type Vip = {
     guest_enter_date: string | null;
     partner_title: string | null;
     date_limit: string | null;
+    invited_by: string | null;
 }
 
 export const vipListTypeKeys = {
@@ -46,6 +47,7 @@ export type UserTypes = typeof userTypeKeys[keyof typeof userTypeKeys];
 
 export type DateLimitedVipInvitationInsert = Database["public"]["Tables"]["dateLimitedVipInvitation"]["Insert"];
 export type DateLimitedVipInvitation = Database["public"]["Tables"]["dateLimitedVipInvitation"]["Row"];
+
 
 export type Rsvp = {
     post_id: string;

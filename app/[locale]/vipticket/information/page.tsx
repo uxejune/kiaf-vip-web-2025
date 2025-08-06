@@ -66,7 +66,7 @@ export default async function Page({
     const ticketUrl = `${process.env.NEXT_PUBLIC_SITE_URL}/vipticket?u=${u.toString()}`
     const tForm = await getTranslations('GuestInviteForm');
 
-    console.log('guest email', ticketDetail);
+
 
 
     return (

@@ -8,6 +8,7 @@ import { Banner } from '@/types/collections';
 import { Button } from '@/components/ui/button';
 import BannersList from '@/components/Banners/BannersList';
 import BannersListEditButton from '@/components/Banners/BannersListEditButton';
+import RunDailyFunctionButton from '@/components/Admin/RunDailyFunctionButton';
 
 
 export default async function Page() {
@@ -223,7 +224,7 @@ export default async function Page() {
 
                             <div className='flex items-center gap-4'>
                                 <h3 className="font-bold">Top</h3>
-                                 <BannersListEditButton initialBanners={topBannersData} type={"top"} />
+                                <BannersListEditButton initialBanners={topBannersData} type={"top"} />
                             </div>
 
                             {topBannersData.length > 0 ? <BannersList banners={topBannersData} /> :
@@ -244,6 +245,10 @@ export default async function Page() {
                                     There are no bottom banners set.
                                 </p>}
 
+                        </div>
+
+                        <div className="mt-4 p-4 border rounded space-y-4">
+                            <RunDailyFunctionButton />
                         </div>
 
                     </div>

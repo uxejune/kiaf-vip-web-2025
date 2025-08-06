@@ -122,6 +122,14 @@ export default function VipDetail({ vip, isAdmin = false }: Props) {
                                 <h3 className="font-bold">Date Limit</h3>
                                 {vip.date_limit ? <Badge variant={"secondary"}>{vip.date_limit}</Badge> : <Badge>None</Badge>}
                             </div>
+
+                            <div>
+                                <h3 className="font-bold">Invited by</h3>
+                                {vip.invited_by ? <Badge variant={"secondary"}>{vip.invited_by}</Badge> : 
+                                vip.gallery_title ? <Badge variant={"secondary"}>{vip.gallery_title}</Badge> :
+                                
+                                <Badge>None</Badge>}
+                            </div>
                         </>
                     }
 
