@@ -111,8 +111,7 @@ export default function RsvpDetailButton({ rsvp }: Props) {
                                     <AddTimeSlotButton rsvp={rsvp} />
                                 </div>
                                 
-                                {/* comment */}
-
+           
 
                                 {rsvp.timeSlots != null &&
                                     <TimeSlotList rsvp={rsvp} />
