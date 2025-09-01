@@ -115,7 +115,29 @@ export default function VipDetail({ vip, isAdmin = false }: Props) {
 
                             <div>
                                 <h3 className="font-bold">Guest</h3>
-                                {vip.guest_email || vip.guest_mobile ? <div className="flex gap-1"><Badge variant={"outline"}>초대함</Badge><Badge variant={"secondary"}>{vip.guest_email || vip.guest_mobile}</Badge></div> : <Badge>None</Badge>}
+                                {vip.guest_email || vip.guest_mobile ?
+                                    <div >
+
+                                        <div className="flex gap-1">
+                                            <Badge variant={"outline"}>초대함</Badge>
+                                            <Badge variant={"secondary"}>{vip.guest_email || vip.guest_mobile}</Badge>
+                                        </div>
+
+                                        {vip.guest_enter_status == "1" ?
+
+                                            <div>
+                                                <Badge variant={"outline"}>게스트 입장함</Badge>
+                                                <p className="text-xs">{vip.guest_enter_date}</p>
+                                            </div>
+
+                                            : <div>
+                                                <Badge variant={"outline"}>게스트 입장전</Badge>
+                                            </div>
+
+                                        }
+
+                                    </div>
+                                    : <Badge>None</Badge>}
                             </div>
 
                             <div>
@@ -125,10 +147,10 @@ export default function VipDetail({ vip, isAdmin = false }: Props) {
 
                             <div>
                                 <h3 className="font-bold">Invited by</h3>
-                                {vip.invited_by ? <Badge variant={"secondary"}>{vip.invited_by}</Badge> : 
-                                vip.gallery_title ? <Badge variant={"secondary"}>{vip.gallery_title}</Badge> :
-                                
-                                <Badge>None</Badge>}
+                                {vip.invited_by ? <Badge variant={"secondary"}>{vip.invited_by}</Badge> :
+                                    vip.gallery_title ? <Badge variant={"secondary"}>{vip.gallery_title}</Badge> :
+
+                                        <Badge>None</Badge>}
                             </div>
                         </>
                     }

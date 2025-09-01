@@ -7,7 +7,7 @@ export type Json =
   | Json[]
 
 export type Database = {
-  // Allows to automatically instanciate createClient with right options
+  // Allows to automatically instantiate createClient with right options
   // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
   __InternalSupabase: {
     PostgrestVersion: "12.2.3 (519615d)"
@@ -22,10 +22,10 @@ export type Database = {
     Functions: {
       graphql: {
         Args: {
+          extensions?: Json
           operationName?: string
           query?: string
           variables?: Json
-          extensions?: Json
         }
         Returns: Json
       }
@@ -109,17 +109,23 @@ export type Database = {
         Row: {
           code: string
           created_at: string
-          date: string
+          date: string | null
+          is_one_day_ticket: boolean
+          vip_id: string
         }
         Insert: {
           code: string
           created_at?: string
-          date: string
+          date?: string | null
+          is_one_day_ticket?: boolean
+          vip_id: string
         }
         Update: {
           code?: string
           created_at?: string
-          date?: string
+          date?: string | null
+          is_one_day_ticket?: boolean
+          vip_id?: string
         }
         Relationships: []
       }

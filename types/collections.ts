@@ -26,6 +26,7 @@ export type Vip = {
     guest_enter_date: string | null;
     partner_title: string | null;
     date_limit: string | null;
+    is_one_day_ticket: boolean | null;
     invited_by: string | null;
 }
 
@@ -125,6 +126,7 @@ export type CreatedId = {
     supabaseRegistration?: boolean;
     vipInvitation?: boolean;
     tier?: string;
+    supabaseOneDayTicketRegistration?: boolean;
 }
 
 export type Partner = {

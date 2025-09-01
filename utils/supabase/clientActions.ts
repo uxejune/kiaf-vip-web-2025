@@ -3,9 +3,10 @@
 import { AdminVipInviteLogInsert, DateLimitedVipInvitationInsert } from "@/types/collections";
 import { createClient } from "./client";
 
-export async function setVipDateLimited(code: string, date: string): Promise<void> {
+export async function setVipDateLimited( id: string, code: string, date: string): Promise<void> {
 
     const insertData: DateLimitedVipInvitationInsert = {
+        vip_id: id,
         date: date,
         code: code
     }

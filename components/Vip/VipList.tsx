@@ -33,6 +33,7 @@ import CancelVipButton from './CancelVipButton';
 import { encrypt } from "@/lib/cryption";
 import DeskCreateVIPAccountButton from './DeskCreateVIPAccountButton';
 import VipDetail from './VipDetail';
+import { Label } from '../ui/label';
 
 interface Props {
     vips: Vip[];
@@ -68,6 +69,7 @@ export default function VipList({ vips, listType, itemsPerPage, isAdmin = false,
     const [searchQuery, setSearchQuery] = useState<string>('');
     const [filteredData, setFilteredData] = useState<Vip[]>(sortedVip);
     const [selectedData, setSelectedVips] = useState<Vip[]>([]);
+    const [isDayLimetedSelected, setIsDayLimetedSelected] = useState<boolean>(false);
 
     const updateDisplayItems = () => {
         const offset = (currentPage - 1) * itemsPerPage;
@@ -78,6 +80,33 @@ export default function VipList({ vips, listType, itemsPerPage, isAdmin = false,
     useEffect(() => {
         updateDisplayItems();
     }, [currentPage, filteredData]);
+
+    useEffect(() => {
+        const lower = (searchQuery || '').toLowerCase();
+        const byQuery = vips.filter(
+            vip => vip.email.toLowerCase().includes(lower) ||
+                vip.barcode.toLowerCase().includes(lower)
+        );
+
+        const byLimit = isDayLimetedSelected
+            ? byQuery.filter(
+                vip => (
+                    (vip.date_limit != null && String(vip.date_limit).trim() !== '') ||
+                    vip.is_one_day_ticket === true
+                )
+            )
+            : byQuery;
+
+        const sorted = isDayLimetedSelected
+            ? [...byLimit].sort((a, b) => {
+                const dateA = a.date_limit ? new Date(a.date_limit).getTime() : Infinity;
+                const dateB = b.date_limit ? new Date(b.date_limit).getTime() : Infinity;
+                return dateA - dateB;
+            })
+            : byLimit;
+
+        setFilteredData(sorted);
+    }, [searchQuery, isDayLimetedSelected, vips]);
 
     // Initialize displayData when component mounts
     useEffect(() => {
@@ -94,13 +123,6 @@ export default function VipList({ vips, listType, itemsPerPage, isAdmin = false,
         const query = event.target.value.toLowerCase();
         setSearchQuery(query);
         setCurrentPage(1);
-        setFilteredData(
-            vips.filter(
-                vip =>
-                    // vip.name.toLowerCase().includes(query) ||
-                    vip.email.toLowerCase().includes(query)
-            )
-        );
     };
 
     const handleCheckboxChange = (vip: Vip) => {
@@ -190,19 +212,41 @@ export default function VipList({ vips, listType, itemsPerPage, isAdmin = false,
             {/* {selectedData.map((vip) => (<div key={vip.email}>{vip.email} </div>))} */}
             {/* <div>user type is {userType}</div> */}
             <div className="flex max-md:flex-col max-md:gap-4 justify-between mb-4">
-                <Input
-                    className="max-w-64"
-                    type="text"
-                    placeholder="Search by email"
-                    value={searchQuery}
-                    onChange={handleSearchChange}
-                />
+                <div className="flex gap-4">
+
+                    <Input
+                        className="w-64"
+                        type="text"
+                        placeholder="Search by email"
+                        value={searchQuery}
+                        onChange={handleSearchChange}
+                    />
 
 
+                    {userType == "admin" &&
+                        <div className="flex items-center gap-1 shrink-0">
+                            <Checkbox
+                                id="dayLimetedFilter"
+                                checked={!!isDayLimetedSelected}
+                                onCheckedChange={(checked) => {
+                                    setIsDayLimetedSelected(!!checked);
+                                    setCurrentPage(1);
+                                }}
+                            />
+                            <Label htmlFor="terms">Date Limited Only</Label>
+                        </div>
+                    }
+                </div>
 
                 <div className="flex gap-2">
+
+
+
                     <CancelVipButton selectedVips={selectedData} />
                     {/* <Button disabled={ selectedData.length === 0 } variant="destructive">초대 취소</Button> */}
+
+
+
                     {listType == "gallery" ?
                         <InviteVipButton
                             userType={userType}
@@ -215,7 +259,7 @@ export default function VipList({ vips, listType, itemsPerPage, isAdmin = false,
                             invited={invited}
                             singleAllocation={singleAllocation}
                             singleInvited={singleInvited}
-                            
+
                         />
                         :
                         <InviteVipButton
@@ -225,6 +269,8 @@ export default function VipList({ vips, listType, itemsPerPage, isAdmin = false,
                             partnerId={partnerId}
                         />
                     }
+
+
 
                 </div>
             </div>
@@ -274,7 +320,7 @@ export default function VipList({ vips, listType, itemsPerPage, isAdmin = false,
 
                                 {vip.mobile}
                                 {/* {userType == "admin" && (vip.gallery_title || vip.partner_title) ? "-" : vip.mobile} */}
-   
+
 
                             </TableCell>
                             {isAdmin && listType == "gallery" ?
@@ -307,9 +353,17 @@ export default function VipList({ vips, listType, itemsPerPage, isAdmin = false,
                                 <TableCell>
                                     {
                                         vip.date_limit == null ?
-                                            <Badge variant={"secondary"}>None</Badge> :
+                                            vip.is_one_day_ticket ?
+                                                <div>
+                                                    <Badge variant={"secondary"}>One Day</Badge>
+                                                    {vip.enter_date && <p>vip.enter_date</p>}
+                                                </div> :
+                                                <Badge variant={"secondary"}>None</Badge> :
+
                                             <Badge>{vip.date_limit}</Badge>
+
                                     }
+
 
                                 </TableCell>
                                 : null}

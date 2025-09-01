@@ -114,14 +114,14 @@ export default async function Page({
     const decryptedInvitationCode = decrypt(u);
 
     let hasPassedNextMidnight: boolean = false;
-    if (ticketData.guest_accept_datetime) {
-        hasPassedNextMidnight = isAfterNextMidnight(ticketData.guest_accept_datetime);
+    if (ticketData.guest_enter_status == "1" && ticketData.guest_accept_datetime) {
+        hasPassedNextMidnight = isAfterNextMidnight(ticketData.guest_enter_date);
     }
 
     const isGuestInvited = ticketData.guest_invite_datetime != null;
     const guestInfo = ticketData.guest_mobile || ticketData.guest_email;
-    // const isGuestAllowed = ticketData.guest_accept_datetime == null || hasPassedNextMidnight;
-    const isGuestAllowed = true;
+    const isGuestAllowed = ticketData.guest_invite_datetime == null || hasPassedNextMidnight;
+    // const isGuestAllowed = true;
 
     const today: DayType = dateChecker();
 

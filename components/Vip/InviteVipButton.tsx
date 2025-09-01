@@ -134,7 +134,7 @@ export default function InviteVipButton({ userType = "admin", vipType, isInviteA
                     if (values.date) {
                         // format date to YYYY-MM-DD to avoid timezone shifts
                         const dateString = format(values.date, 'yyyy-MM-dd');
-                        await setVipDateLimited(res.invitation_code, dateString);
+                        await setVipDateLimited(res.id, res.invitation_code, dateString);
                     }
 
                     await setAdminVipIviteLog(res.invitation_code, userEmail ?? 'unknown');

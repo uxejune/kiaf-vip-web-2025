@@ -80,6 +80,7 @@ export default async function Page() {
         const match = dateLimitedVipInvitationData.find(item => item.code === vip.invitation_code);
         if (match) {
             (vip as Vip).date_limit = match.date;
+            (vip as Vip).is_one_day_ticket = match.is_one_day_ticket;
         }
     });
 
@@ -90,7 +91,6 @@ export default async function Page() {
             (vip as Vip).invited_by = logMatch.account;
         }
     });
-
 
 
     console.log('vipListData :', vipListData);

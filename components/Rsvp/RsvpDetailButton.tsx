@@ -93,6 +93,11 @@ export default function RsvpDetailButton({ rsvp }: Props) {
 
                                 {rsvp.applicants && rsvp.applicants.length > 0 ? <ApplicantList applicants={rsvp.applicants} /> : <p>No applicants yet.</p>}
 
+                                {/* {rsvp.timeSlots != null &&
+                                    <TimeSlotList rsvp={rsvp} />
+                                } */}
+
+
                             </div>
 
                             :

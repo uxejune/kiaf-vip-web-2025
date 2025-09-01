@@ -48,6 +48,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import supabaseClient from "@/utils/supabase/supabaseClient";
 import { createClient } from "@/utils/supabase/client";
+import { Checkbox } from "../ui/checkbox";
 
 interface Props {
     partners: Partner[];
@@ -65,6 +66,7 @@ export default function CreatedIdForm({ partners }: Props) {
         partnerId: z.string().min(3, { message: 'please select partner' }),
         offset: z.number().optional(),
         tier: z.enum(["1", "2"]),
+        isOneDayTicket: z.boolean()
     });
 
     const form = useForm<z.infer<typeof formSchema>>({
@@ -74,6 +76,7 @@ export default function CreatedIdForm({ partners }: Props) {
             count: 0,
             partnerId: "",
             tier: "1",
+            isOneDayTicket: false
         },
     })
 
@@ -118,8 +121,10 @@ export default function CreatedIdForm({ partners }: Props) {
             const email = `${accountName}@${values.idPreFix}kiafpartner.org`;
             let vipInvitation = false;
             let supabaseRegistration = false;
+            let supabaseOneDayTicketRegistration = false;
             let idCreation = false;
             let accountId: string | null = null;
+            const isOneDayTicket = values.isOneDayTicket;
             const vipId: string | null = null;
             const vipTier: string = values.tier;
 
@@ -144,12 +149,21 @@ export default function CreatedIdForm({ partners }: Props) {
 
                 //2. try to make Kiaf account
 
+                console.log("create accout data", {
+                    id: accountName,
+                    password: password,
+                    email: email
+
+                })
+
                 const createAccountRes = await createAccount(
                     accountName,
                     password,
                     email,
                     0,
                     "ko");
+
+
 
                 if (createAccountRes.status == false) {
 
@@ -158,6 +172,8 @@ export default function CreatedIdForm({ partners }: Props) {
                 } else {
 
 
+                    console.log("create account res", createAccountRes);
+                    console.log("invite res", inviteRes);
 
                     //success to create the account
                     idCreation = true;
@@ -178,11 +194,31 @@ export default function CreatedIdForm({ partners }: Props) {
                         })
 
                     if (error) {
-                        console.error("Error inserting data:", error);
+                        console.error("Error inserting account data:", error);
                     } else {
                         supabaseRegistration = true
 
                     }
+
+                    if (isOneDayTicket) {
+                        const { data: dateLimitedVipInvitationData, error: dateLimitedVipInvitationError } = await supabase
+                            .from('dateLimitedVipInvitation')
+                            .insert({
+                                vip_id: inviteRes.id,
+                                code: inviteRes.invitation_code,
+                                is_one_day_ticket: true
+                            })
+
+                        if (dateLimitedVipInvitationError) {
+                            console.error("Error inserting one day ticket data:", error);
+                        } else {
+                            supabaseOneDayTicketRegistration = true;
+                        }
+                    }
+
+
+
+
 
                 }
 
@@ -199,6 +235,7 @@ export default function CreatedIdForm({ partners }: Props) {
                 partner_id: values.partnerId,
                 idCreation: idCreation,
                 supabaseRegistration: supabaseRegistration,
+                supabaseOneDayTicketRegistration: supabaseOneDayTicketRegistration,
                 vipInvitation: vipInvitation,
                 tier: vipTier
             }
@@ -322,6 +359,25 @@ export default function CreatedIdForm({ partners }: Props) {
                                 </FormItem>
                             )}
                         />
+                        <div className="flex items-center">
+                            <FormField
+                                control={form.control}
+                                name="isOneDayTicket"
+                                render={({ field }) => (
+                                    <FormItem className="flex flex-row justify-center">
+
+                                        <FormControl>
+                                            <Checkbox
+                                                checked={field.value}
+                                                onCheckedChange={(checked) => field.onChange(!!checked)}
+                                            />
+                                        </FormControl>
+                                        <FormLabel>Is One Day Ticket? *</FormLabel>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                        </div>
 
                     </div>
 
@@ -345,6 +401,7 @@ export default function CreatedIdForm({ partners }: Props) {
                         <TableHead>Tier</TableHead>
                         <TableHead>ID Creation</TableHead>
                         <TableHead>Supabase Registration</TableHead>
+                        <TableHead>Oneday Ticket Registration</TableHead>
                         <TableHead>VIP Invitation</TableHead>
                     </TableRow>
                 </TableHeader>
@@ -364,13 +421,16 @@ export default function CreatedIdForm({ partners }: Props) {
                                 {createdId.email}
                             </TableCell>
                             <TableCell>
-                                {createdId.tier === "1" ? <Badge>Normal</Badge> : <Badge>Single</Badge> }
+                                {createdId.tier === "1" ? <Badge>Normal</Badge> : <Badge>Single</Badge>}
                             </TableCell>
                             <TableCell>
                                 {createdId.idCreation ? <Badge variant={"outline"}>Done</Badge> : <Badge>False</Badge>}
                             </TableCell>
                             <TableCell>
                                 {createdId.supabaseRegistration ? <Badge variant={"outline"}>Done</Badge> : <Badge>False</Badge>}
+                            </TableCell>
+                            <TableCell>
+                                {createdId.supabaseOneDayTicketRegistration ? <Badge variant={"outline"}>Done</Badge> : <Badge>False</Badge>}
                             </TableCell>
                             <TableCell>
                                 {createdId.vipInvitation ? <Badge variant={"outline"}>Done</Badge> : <Badge>False</Badge>}

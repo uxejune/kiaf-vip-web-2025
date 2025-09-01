@@ -1,8 +1,8 @@
 import { checkUserAccount } from "@/lib/account"
 import Aside from "@/components/General/Aside/Aside"
 import VipList from "@/components/Vip/VipList";
-
-
+import { createClient } from "@/utils/supabase/server";
+import { AdminVipInviteLog, DateLimitedVipInvitation, Vip } from "@/types/collections";
 
 const myHeaders = new Headers();
 myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
@@ -47,10 +47,45 @@ export default async function Page(){
         )
     }
 
-    const partnerVipListData = await partnerVipList();
+    const partnerVipListData: Vip[] = await partnerVipList();
 
 
+    //fetching date limited VIP invitation list
 
+    const supabase = await createClient();
+
+    const { data: dateLimitedVipInvitation, error: errorDateLimitedVipInvitation } = await supabase
+        .from("dateLimitedVipInvitation")
+        .select("*");
+
+
+    const { data: adminVipInviteLog, error: errorAdminVipInviteLog } = await supabase
+        .from("adminVipInviteLog")
+        .select("*");
+
+
+    const dateLimitedVipInvitationData: DateLimitedVipInvitation[] = dateLimitedVipInvitation ?? [];
+
+    const adminVipInviteLogData: AdminVipInviteLog[] = adminVipInviteLog ?? []
+
+    // merge dateLimited info into vipListData by matching barcode with code
+    partnerVipListData.forEach(vip => {
+        const match = dateLimitedVipInvitationData.find(item => item.code === vip.invitation_code);
+        if (match) {
+            (vip as Vip).date_limit = match.date;
+            (vip as Vip).is_one_day_ticket = match.is_one_day_ticket;
+        }
+    });
+
+    // merge admin invite log info into vipListData by matching barcode with code
+    partnerVipListData.forEach(vip => {
+        const logMatch = adminVipInviteLogData.find(log => log.code === vip.invitation_code);
+        if (logMatch) {
+            (vip as Vip).invited_by = logMatch.account;
+        }
+    });
+
+    console.log('vipListData :', partnerVipListData);
 
     return(
         <div className="flex min-h-screen flex-col ">
