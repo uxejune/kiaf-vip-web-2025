@@ -82,6 +82,7 @@ export default async function Page({
                 </ul>
                 <GuestInviteButton
                     invitationCode={decryptedInvitationCode}
+                    encodedCode={encodedParameter}
                     formTitle={tForm("formTitle")}
                     formDescription={tForm("formDescribtion")}
                     guestInvitationTypeLable={tForm("guestInvitationTypeLable")}
@@ -93,6 +94,7 @@ export default async function Page({
                     emailDescription={tForm("emailDescription")}
                     validationMessage={tForm("validationMessage")}
                     submitButton={tForm("submitButton")}
+                    guestChangeMessage={tForm("guestChangeMessage")}
                 />
             </div>
         </div>
