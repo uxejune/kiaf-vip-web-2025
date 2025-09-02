@@ -154,6 +154,7 @@ export default async function Page({
                         friezeEntryInfo={friezeEntryInfo()}
                         ticketType="vip"
                         warningInfo={t("warningInfo")}
+                        // dayLimitedTicketMessage={dateLimitedVipInvitationData ? t("1dayTicketMessage") : null}
                     />
 
                     {dateLimitedVipInvitationData && <p className='text-center'><span className='font-bold'>{dateLimitedVipInvitationData.date}</span><br /> {t("1dayTicketMessage")}</p>}

@@ -5,7 +5,7 @@ import Sidebar from '@/components/General/Sidebar'
 import Aside from '@/components/General/Aside/Aside';
 import Image from 'next/image';
 
-const accessibleRoles = ["master", "admin", "guestDev", "agent"];
+const accessibleRoles = ["master", "admin", "guestDev", "agent", "rsvpAgent"];
 
 
 export default async function PrivatePage() {

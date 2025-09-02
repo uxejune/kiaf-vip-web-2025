@@ -47,7 +47,7 @@ const timeSlotList = async () => {
     }
 }
 
-const accessibleRoles = ["master", "admin"];
+const accessibleRoles = ["master", "admin", "rsvpAgent"];
 
 export default async function Page() {
 

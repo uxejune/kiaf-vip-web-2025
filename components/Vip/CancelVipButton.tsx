@@ -94,7 +94,7 @@ export default function CancelVipButton({ userType = "admin", selectedVips, gall
     return (
         <AlertDialog>
             <AlertDialogTrigger asChild>
-                <Button disabled={selectedVips.length === 0 || isProcessing === true} variant="destructive">Cancel</Button>
+                <Button disabled={selectedVips.length === 0 || isProcessing === true || userType === "agent" } variant="destructive">Cancel</Button>
             </AlertDialogTrigger>
             <AlertDialogContent>
                 <AlertDialogHeader>

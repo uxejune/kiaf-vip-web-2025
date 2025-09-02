@@ -132,7 +132,7 @@ export default async function Page() {
 
                     </div>
 
-                    <VipList vips={vipListData} listType='gallery' itemsPerPage={10} isAdmin userEmail={user.email} />
+                    <VipList vips={vipListData} listType='gallery' userType={user.role=="agent" ? "agent" : "admin" } itemsPerPage={10} isAdmin userEmail={user.email} />
 
                 </div>
             </div>

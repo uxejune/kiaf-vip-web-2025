@@ -242,7 +242,7 @@ export default function VipList({ vips, listType, itemsPerPage, isAdmin = false,
 
 
 
-                    <CancelVipButton selectedVips={selectedData} />
+                    <CancelVipButton selectedVips={selectedData} userType={userType} />
                     {/* <Button disabled={ selectedData.length === 0 } variant="destructive">초대 취소</Button> */}
 
 
@@ -369,7 +369,7 @@ export default function VipList({ vips, listType, itemsPerPage, isAdmin = false,
                                 : null}
 
                             <TableCell>
-                                <VipDetail vip={vip} isAdmin={isAdmin} />
+                                <VipDetail vip={vip} isAdmin={isAdmin} listType={listType} />
                             </TableCell>
 
 

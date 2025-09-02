@@ -97,7 +97,7 @@ export default async function Page(){
                 <div className="p-4 w-full">
                     <h1 className="heading-1 mb-4">Partner VIP</h1>
                     {/* <VipList vips={data} itemsPerPage={10} /> */}
-                    <VipList vips={partnerVipListData} listType='partner' itemsPerPage={10} isAdmin/>
+                    <VipList vips={partnerVipListData} listType='partner' userType={user.role=="agent" ? "agent" : "admin" } itemsPerPage={10} isAdmin/>
                 </div>
             </div>
 

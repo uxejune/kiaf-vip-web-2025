@@ -97,7 +97,7 @@ export default async function Page({
 
     const encodedParameter = encodeURIComponent(u.toString());
 
-    console.log('encodedParameter', encodedParameter);
+    // console.log('encodedParameter', encodedParameter);
 
     const ticketData = await vipTicketDetail(encodedParameter);
 
@@ -126,7 +126,7 @@ export default async function Page({
         (isGuestEntered && isAfterNextMidnight(ticketData.guest_enter_date)); // 게스트가 입장했지만 자정 지남
 
     if (isGuestAllowed){
-        console.log('guest invitation is allowed!');
+        // console.log('guest invitation is allowed!');
     }
 
 
@@ -147,7 +147,7 @@ export default async function Page({
         }
     }
 
-    console.log(today);
+    // console.log(today);
 
 
     const friezeEntryInfo = today === "day1" ? t("friezeEntryInfo") : null;
@@ -166,6 +166,8 @@ export default async function Page({
 
     //check date limit
     const supabase = await createClient();
+
+
 
     const { data: dateLimitedVipInvitation, error: errorDateLimitedVipInvitation } = await supabase
         .from("dateLimitedVipInvitation")
@@ -199,6 +201,7 @@ export default async function Page({
                     friezeEntryInfo={friezeEntryInfo}
                     ticketType="vip"
                     warningInfo={t("warningInfo")}
+                    // dayLimitedTicketMessage={dateLimitedVipInvitationData ? t("1dayTicketMessage") : null}
                 />
 
                 {dateLimitedVipInvitationData && <p className='text-center'><span className='font-bold'>{dateLimitedVipInvitationData.date}</span><br /> {t("1dayTicketMessage")}</p>}

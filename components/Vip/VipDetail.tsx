@@ -1,6 +1,6 @@
 "use client"
 
-import { Vip } from "@/types/collections"
+import { Vip, VipListTypes } from "@/types/collections"
 
 import {
     Sheet,
@@ -23,11 +23,12 @@ import { encrypt } from "@/lib/cryption";
 interface Props {
     vip: Vip,
     isAdmin?: boolean
+    listType: VipListTypes;
 }
 
 
 
-export default function VipDetail({ vip, isAdmin = false }: Props) {
+export default function VipDetail({ vip, isAdmin = false,listType }: Props) {
     const [isLoading, setIsLoading] = useState(false);
 
     const encryptedCode = encrypt(vip.invitation_code);
@@ -83,7 +84,7 @@ export default function VipDetail({ vip, isAdmin = false }: Props) {
                 <div className="flex flex-col p-4 space-y-8">
 
                     <div className="flex gap-2">
-                        <Button variant={"outline"} onClick={onResend} >
+                        <Button disabled={listType=="partner"} variant={"outline"} onClick={onResend} >
                             {isLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : "Resend Invitation"}
                         </Button>
 

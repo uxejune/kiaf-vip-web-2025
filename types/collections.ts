@@ -41,7 +41,8 @@ export type VipListTypes = typeof vipListTypeKeys[keyof typeof vipListTypeKeys];
 export const userTypeKeys = {
     admin: 'admin',
     gallery: 'gallery',
-    partner: 'partner'
+    partner: 'partner',
+    agent: 'agent'
 } as const;
 
 export type UserTypes = typeof userTypeKeys[keyof typeof userTypeKeys];

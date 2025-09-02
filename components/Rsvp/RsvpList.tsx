@@ -127,6 +127,7 @@ export default function RsvpList({ rsvps, itemsPerPage }: Props) {
                 <TableRow>
                     <TableHead>Event</TableHead>
                     <TableHead>Type</TableHead>
+                    <TableHead>Date</TableHead>
                     <TableHead></TableHead>
                 </TableRow>
             </TableHeader>
@@ -156,6 +157,9 @@ export default function RsvpList({ rsvps, itemsPerPage }: Props) {
                                 </div>
 
                             }
+                        </TableCell>
+                        <TableCell>
+                            <p>{rsvp.program_date}</p>
                         </TableCell>
                         <TableCell>
 

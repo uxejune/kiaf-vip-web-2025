@@ -17,11 +17,13 @@ interface Props {
     friezeEntryInfo?: string | null;
     ticketType: TicketTypes;
     warningInfo: string;
+  
 }
 
 export default function VipTicket({ qrCode, entryInfo, locationInfo, friezeEntryInfo, ticketType, warningInfo }: Props) {
 
     // console.log('entry info',entryInfo);
+    // console.log(dayLimitedTicketMessage);
 
     return (
 
@@ -37,6 +39,7 @@ export default function VipTicket({ qrCode, entryInfo, locationInfo, friezeEntry
                     {/* <p>{entryInfo}</p> */}
                     <p>{warningInfo}</p>
                     {friezeEntryInfo ? <p>{friezeEntryInfo}</p> : null}
+                    {/* {dayLimitedTicketMessage ? <p>{dayLimitedTicketMessage}</p> : null} */}
                 </div>
                 {/* <div className="bg-background flex justify-between ">
                     <div className="bg-neutral-100 border-r border-t h-4 w-4  rounded-tr-full"/>
