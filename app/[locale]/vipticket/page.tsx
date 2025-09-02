@@ -97,6 +97,8 @@ export default async function Page({
 
     const encodedParameter = encodeURIComponent(u.toString());
 
+    console.log('encodedParameter', encodedParameter);
+
     const ticketData = await vipTicketDetail(encodedParameter);
 
     if (!ticketData || !ticketData.status) {
@@ -108,28 +110,26 @@ export default async function Page({
         );
     }
 
-    console.log('ticket data:',ticketData);
+    // console.log('ticket data:',ticketData);
 
 
     const decryptedInvitationCode = decrypt(u);
 
-    let hasPassedNextMidnight: boolean = false;
-
-    if (ticketData.guest_enter_status == "1" && ticketData.guest_invite_datetime) {
-        hasPassedNextMidnight = isAfterNextMidnight(ticketData.guest_enter_date);
-    }
-
-    if (hasPassedNextMidnight) {
-        console.log('hasPassedNextMidnight: true');
-    }
 
     const isGuestInvited = ticketData.guest_invite_datetime != null;
-    const isGuestAllowed = isGuestInvited || hasPassedNextMidnight;
-    // const isGuestAllowed = true;
+    const isGuestEntered = ticketData.guest_enter_status == "1";
+    
+
+    const isGuestAllowed =
+        !isGuestInvited || // 아직 게스트 초대가 안되었거나
+        (isGuestInvited && !isGuestEntered) || // 게스트는 초대 되었지만 아직 입장하지 않았거나
+        (isGuestEntered && isAfterNextMidnight(ticketData.guest_enter_date)); // 게스트가 입장했지만 자정 지남
 
     if (isGuestAllowed){
         console.log('guest invitation is allowed!');
     }
+
+
 
     const today: DayType = dateChecker();
 
@@ -221,6 +221,7 @@ export default async function Page({
                                     {isGuestAllowed ? (
                                         <GuestInviteButton
                                             invitationCode={decryptedInvitationCode}
+                                            encodedCode={encodedParameter}
                                             formTitle={tForm("formTitle")}
                                             formDescription={tForm("formDescribtion")}
                                             guestInvitationTypeLable={tForm("guestInvitationTypeLable")}
@@ -232,6 +233,7 @@ export default async function Page({
                                             emailDescription={tForm("emailDescription")}
                                             validationMessage={tForm("validationMessage")}
                                             submitButton={tForm("submitButton")}
+                                            guestChangeMessage={tForm("guestChangeMessage")}
                                         />
                                     ) : null
 

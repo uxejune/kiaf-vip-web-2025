@@ -28,6 +28,7 @@
     "GuestInviteForm": {
       "formTitle": "Invite a Guest",
       "formDescribtion": "발송 후 게스트 정보 수정이 불가능하니 초대장을 받을 수 있는 전화번호가 맞는지 확인해주세요.",
+      "guestChangeMessage": "동반인 변경은 자정 이후에 가능해요.",
       "guestInvitationTypeLable": "초청 방법을 선택해 주세요.",
       "phone": "휴대폰",
       "phoneValidationMessage":"휴대폰 번호를 확인해 주세요.",

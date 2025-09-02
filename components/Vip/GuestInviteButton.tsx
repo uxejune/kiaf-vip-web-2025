@@ -24,16 +24,17 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { useState } from "react";
-import { GalleryVipInvite, GuestInvite, vipInvite } from '@/lib/api';
+import { GalleryVipInvite, GuestInvite, TicketDetail, vipInvite } from '@/lib/api';
 import { guestInvitationTypeKeys, UserTypes } from "@/types/collections";
 import { GuestInvitationTypes } from "@/types/collections";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { decrypt } from "@/lib/cryption";
+import { isAfterNextMidnight } from "@/lib/utils";
 
 
 interface Props {
     invitationCode: string;
-
+    encodedCode: string;
     formTitle: string;
     formDescription: string;
     guestInvitationTypeLable: string;
@@ -45,10 +46,51 @@ interface Props {
     emailDescription: string;
     validationMessage: string;
     submitButton: string;
-
+    guestChangeMessage: string;
 }
 
-export default function GuestInviteButton({ invitationCode, formTitle, formDescription, guestInvitationTypeLable, phoneLabel, phoneValidationMessage, emailLabel, emailValidationMessage, phoneDescription, emailDescription, validationMessage, submitButton }: Props) {
+export default function GuestInviteButton({ invitationCode, encodedCode, formTitle, formDescription, guestInvitationTypeLable, phoneLabel, phoneValidationMessage, emailLabel, emailValidationMessage, phoneDescription, emailDescription, validationMessage, submitButton, guestChangeMessage }: Props) {
+
+    const [open, setOpen] = useState<boolean>(false);
+    const [isChecking, setIsChecking] = useState<boolean>(false);
+    const [isGuestAllowed, setIsGuestAllowd] = useState<boolean>(false);
+    const [blockMessage, setBlockMessage] = useState<string>("");
+
+    async function handleOpenChange(next: boolean) {
+        
+        setIsChecking(true);
+
+        setOpen(next);
+        if (!next) return;
+
+        const ticketData = await TicketDetail(encodedCode);
+        console.log(ticketData);
+
+        if (ticketData.status != true) {
+            // fail to get ticket status
+            setBlockMessage("Can not check ticket status.");
+        }
+
+        const isGuestInvited = ticketData.guest_invite_datetime != null;
+        const isGuestEntered = ticketData.guest_enter_status == "1";
+
+
+
+
+        setIsGuestAllowd(
+            !isGuestInvited || // 아직 게스트 초대가 안되었거나
+            (isGuestInvited && !isGuestEntered) || // 게스트는 초대 되었지만 아직 입장하지 않았거나
+            (isGuestEntered && isAfterNextMidnight(ticketData.guest_enter_date)) // 게스트가 입장했지만 자정 지남
+        );
+
+    
+        setIsChecking(false);
+
+        // console.log('open');
+
+
+
+    }
 
     const [guestInvitationType, setGuestInvitationType] = useState<GuestInvitationTypes>("phone");
     const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -119,7 +161,7 @@ export default function GuestInviteButton({ invitationCode, formTitle, formDescr
     }
 
     return (
-        <Dialog>
+        <Dialog open={open} onOpenChange={handleOpenChange}>
             <DialogTrigger asChild>
                 <Button variant={"outline"} className=" w-[10rem] shrink-0" >INVITE A GUEST</Button>
             </DialogTrigger>
@@ -128,6 +170,9 @@ export default function GuestInviteButton({ invitationCode, formTitle, formDescr
                     <DialogTitle>{formTitle}</DialogTitle>
                     <DialogDescription>
                         {formDescription}
+
+                        {isChecking ? <span><br/><br/>Loading...</span> :!isGuestAllowed && <><br/><span className="text-red-500">{guestChangeMessage}</span></> }
+
                     </DialogDescription>
                 </DialogHeader>
                 <Form {...form}>
@@ -223,7 +268,7 @@ export default function GuestInviteButton({ invitationCode, formTitle, formDescr
                             /> : null
                         }
 
-                        <Button disabled={isLoading === true} type="submit">
+                        <Button disabled={isLoading === true || !isGuestAllowed} type="submit">
                             {isLoading ? "Loading..." : "Invite"}
                         </Button>
                     </form>

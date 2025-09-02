@@ -14,23 +14,26 @@ export default function VipPartners() {
     const direction = -1;
 
     useEffect(() => {
+        let frameId: number;
 
-        requestAnimationFrame(animation);
+        const animation = () => {
+            if (xPercent <= -100) {
+                xPercent = 0;
+            }
 
-    },[])
+            // Null-safe GSAP updates
+            if (firstLogoGroup.current) gsap.set(firstLogoGroup.current, { xPercent });
+            if (secondLogoGroup.current) gsap.set(secondLogoGroup.current, { xPercent });
+            if (thirdLogoGroup.current) gsap.set(thirdLogoGroup.current, { xPercent });
 
-    const animation = () => {
-;
-        if(xPercent <= -100){
-            xPercent = 0;
-        }
+            xPercent += 0.05 * direction;
+            frameId = requestAnimationFrame(animation);
+        };
 
-        gsap.set(firstLogoGroup.current,{xPercent: xPercent})
-        gsap.set(secondLogoGroup.current,{xPercent: xPercent})
-        gsap.set(thirdLogoGroup.current,{xPercent: xPercent})
-        xPercent += 0.05 * direction;
-        requestAnimationFrame(animation);
-    }
+        frameId = requestAnimationFrame(animation);
+
+        return () => cancelAnimationFrame(frameId);
+    }, []);
 
     return (
         <div className="flex overflow-hidden">

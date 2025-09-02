@@ -25,6 +25,8 @@ export default function TimeSlotDeleteButton({ timeSlot }: Props) {
 
     const [isLoading, setIsLoading] = useState(false);
 
+    const isDeleteButtonActive = timeSlot.applicants ? timeSlot.applicants?.length > 0 : false;
+
     async function onCancel() {
         setIsLoading(true);
 
@@ -59,7 +61,7 @@ export default function TimeSlotDeleteButton({ timeSlot }: Props) {
     return (
         <AlertDialog>
             <AlertDialogTrigger asChild>
-                <Button size={"icon"} variant="ghost"><Trash/></Button>
+                <Button size={"icon"} variant="ghost" disabled={isDeleteButtonActive}><Trash/></Button>
             </AlertDialogTrigger>
             <AlertDialogContent>
                 <AlertDialogHeader>

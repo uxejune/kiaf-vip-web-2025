@@ -1,4 +1,4 @@
-export async function vipInvite(email: string, phone: string, tier: "1" | "2" = "1"  ) {
+export async function vipInvite(email: string, phone: string, tier: "1" | "2" = "1") {
 
     const requestBody = JSON.stringify({
         email: email,
@@ -27,14 +27,14 @@ export async function vipInvite(email: string, phone: string, tier: "1" | "2" = 
 
 }
 
-export async function createAccount(userLogin: string, userPass: string, userEmail:string, newsLetter:number, langCode:string) {
+export async function createAccount(userLogin: string, userPass: string, userEmail: string, newsLetter: number, langCode: string) {
 
     const requestBody = JSON.stringify({
         user_login: userLogin,
         user_pass: userPass,
         user_email: userEmail,
-        news_letter:newsLetter,
-        lang_code:langCode,
+        news_letter: newsLetter,
+        lang_code: langCode,
     });
 
     try {
@@ -57,8 +57,8 @@ export async function createAccount(userLogin: string, userPass: string, userEma
 
 }
 
-export async function deleteAccount(userId:string) {
-    
+export async function deleteAccount(userId: string) {
+
     const requestBody = JSON.stringify({
         user_id: userId
     });
@@ -79,7 +79,7 @@ export async function deleteAccount(userId:string) {
         console.log(err);
         return (err)
     }
-    
+
 }
 
 export async function cancelVip(vipId: string) {
@@ -162,7 +162,7 @@ export async function GalleryVipInvite(email: string, phone: string, galleryId: 
     }
 }
 
-export async function PartnerVipInvite(email: string, phone: string, partnerId: string, vipTier:string) {
+export async function PartnerVipInvite(email: string, phone: string, partnerId: string, vipTier: string) {
     const requestBody = JSON.stringify({
         email: email,
         phone: phone,
@@ -183,7 +183,7 @@ export async function PartnerVipInvite(email: string, phone: string, partnerId: 
         const data = await res.json();
 
         return (data)
-  
+
     } catch (err) {
         console.log(err);
         return (err)
@@ -268,6 +268,37 @@ export async function VipTicketDetail(invitationCode: string) {
         console.log(err);
         return (err)
     }
+}
+
+export async function TicketDetail(invitationCode: string) {
+
+
+
+
+    const requestOptions = {
+        method: "GET",
+        redirect: "follow" as RequestRedirect,
+        next: { tags: ['collection'] },
+        cache: 'no-store' as RequestCache,
+    };
+
+    // console.log("passde invitation code", invitationCode)
+
+    try {
+        const url = `${process.env.NEXT_PUBLIC_SITE_URL}/api/ticket_detail?invitation_code=${invitationCode}`;
+        const res = await fetch(url, requestOptions);
+        if (!res.ok) {
+            const text = await res.text();
+            console.error('ticket_detail API failed:', res.status, text);
+            throw new Error(`ticket_detail API failed: ${res.status}`);
+        }
+        return await res.json();
+
+    } catch (err) {
+        console.log(err);
+        return (err)
+    }
+
 }
 
 export async function GuestInvite(invitationCode: string, email?: string | null, mobile?: string | null) {
@@ -388,5 +419,3 @@ export async function artworkDocentDelete(artworkId: string, langCode: string) {
     }
 
 }
-
-

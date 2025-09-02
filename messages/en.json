@@ -28,6 +28,7 @@
   "GuestInviteForm": {
     "formTitle": "Invite a Guest",
     "formDescribtion": "Please ensure the phone number provided is correct as guest information cannot be modified after sending the invitation.",
+    "guestChangeMessage": "You can change your guest after midnight",
     "guestInvitationTypeLable": "Please select invitation method",
     "phone": "Mobile number",
     "phoneValidationMessage":"Please provide a valid mobile phone number",
