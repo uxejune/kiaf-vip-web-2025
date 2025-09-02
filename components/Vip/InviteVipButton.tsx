@@ -110,8 +110,8 @@ export default function InviteVipButton({ userType = "admin", vipType, isInviteA
 
     // 2. Define a submit handler.
     async function onSubmit(values: z.infer<typeof formSchema>) {
-        console.log('values:',values)
-        
+        console.log('values:', values)
+
         setIsLoading(true);
 
 
@@ -121,7 +121,7 @@ export default function InviteVipButton({ userType = "admin", vipType, isInviteA
         const phone = values.phone ? values.phone.replace(/-/g, '') : '';
         const tier = values.tier;
 
-        if (userType == "admin") {
+        if (userType == "admin" || userType == "agent" ) {
             //run admin invite
 
             const res = await vipInvite(email, phone, tier)
@@ -198,6 +198,7 @@ export default function InviteVipButton({ userType = "admin", vipType, isInviteA
                     <DialogTitle>Invite VIP</DialogTitle>
                     <DialogDescription>
                         Click invite when you&#39;re done.
+                        {userType}
                     </DialogDescription>
                 </DialogHeader>
                 <Form {...form}>
@@ -269,7 +270,7 @@ export default function InviteVipButton({ userType = "admin", vipType, isInviteA
                             )}
                         />
 
-                        {userType === "admin" &&
+                        {(userType === "admin" || userType === "agent") &&
 
                             <FormField
                                 control={form.control}

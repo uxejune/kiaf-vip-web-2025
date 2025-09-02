@@ -190,7 +190,7 @@ export default function CanceledVipList({ canceledVips, itemsPerPage, isAdmin = 
                         <TableHead>이메일</TableHead>
                         <TableHead>전화번호</TableHead>
                         {isAdmin ? <TableHead>초대처</TableHead> : null}
-                        <TableHead>Tier</TableHead>
+                        <TableHead>Type</TableHead>
                         {isAdmin && <TableHead></TableHead>}
 
 
@@ -200,7 +200,7 @@ export default function CanceledVipList({ canceledVips, itemsPerPage, isAdmin = 
                 </TableHeader>
                 <TableBody>
                     {displayData.map((vip) => (
-                        <TableRow key={vip.email}>
+                        <TableRow key={vip.id}>
                             {/* <TableCell>
                                 <Checkbox
                                     checked={selectedData.some(selectedVip => selectedVip.id === vip.id)}
@@ -215,12 +215,14 @@ export default function CanceledVipList({ canceledVips, itemsPerPage, isAdmin = 
                             </TableCell> */}
 
                             <TableCell>
-                                {userType == "admin" && (vip.gallery_title || vip.partner_title) ? "-" : vip.email}
+                                {/* {userType == "admin" && (vip.gallery_title || vip.partner_title) ? "-" : vip.email} */}
+                                {vip.email}
                                 {/* {userType=="gallery" ? vip.email : null}
                                 {userType=="partner" ? vip.email : null} */}
                             </TableCell>
                             <TableCell>
-                                {userType == "admin" && (vip.gallery_title || vip.partner_title) ? "-" : vip.mobile}
+                                {vip.mobile}
+                                {/* {userType == "admin" && (vip.gallery_title || vip.partner_title) ? "-" : vip.mobile} */}
                                 {/* {userType=="gallery" ? vip.mobile : null}
                                 {userType=="partner" ? vip.mobile : null} */}
 
@@ -238,7 +240,7 @@ export default function CanceledVipList({ canceledVips, itemsPerPage, isAdmin = 
                                 : null}
 
                             <TableCell>
-                                <Badge>{vip.vip_tier === "1" ? "Tier 1" : "Tier 2"}</Badge>
+                                <Badge>{vip.vip_tier === "1" ? "Normal" : "Single"}</Badge>
                             </TableCell>
 
                             {isAdmin &&

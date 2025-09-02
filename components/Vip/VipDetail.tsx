@@ -28,7 +28,7 @@ interface Props {
 
 
 
-export default function VipDetail({ vip, isAdmin = false,listType }: Props) {
+export default function VipDetail({ vip, isAdmin = false, listType }: Props) {
     const [isLoading, setIsLoading] = useState(false);
 
     const encryptedCode = encrypt(vip.invitation_code);
@@ -84,7 +84,7 @@ export default function VipDetail({ vip, isAdmin = false,listType }: Props) {
                 <div className="flex flex-col p-4 space-y-8">
 
                     <div className="flex gap-2">
-                        <Button disabled={listType=="partner"} variant={"outline"} onClick={onResend} >
+                        <Button disabled={listType == "partner"} variant={"outline"} onClick={onResend} >
                             {isLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : "Resend Invitation"}
                         </Button>
 
@@ -150,8 +150,8 @@ export default function VipDetail({ vip, isAdmin = false,listType }: Props) {
                                 <h3 className="font-bold">Invited by</h3>
                                 {vip.invited_by ? <Badge variant={"secondary"}>{vip.invited_by}</Badge> :
                                     vip.gallery_title ? <Badge variant={"secondary"}>{vip.gallery_title}</Badge> :
-
-                                        <Badge>None</Badge>}
+                                        vip.partner_title ? <Badge variant={"secondary"}>{vip.partner_title}</Badge> :
+                                            <Badge>None</Badge>}
                             </div>
                         </>
                     }

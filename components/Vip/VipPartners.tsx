@@ -40,26 +40,26 @@ export default function VipPartners() {
             <div ref={firstLogoGroup} className="shrink-0 flex gap-6 px-3">
                 <PartnerLogo partnerName="KB Financial Group" imageUrl="/imgs/partner_logo_01.png" width={99} height={36}/>
                 <PartnerLogo partnerName="KB Financial Group" imageUrl="/imgs/partner_logo_02.png" width={99} height={36}/>
-                <PartnerLogo partnerName="KB Financial Group" imageUrl="/imgs/partner_logo_03_bw.png" width={36} height={36}/>
+                <PartnerLogo partnerName="KB Financial Group" imageUrl="/imgs/partner_logo_03_02.png" width={36} height={36}/>
                 <PartnerLogo partnerName="KB Financial Group" imageUrl="/imgs/partner_logo_01.png" width={99} height={36}/>
                 <PartnerLogo partnerName="KB Financial Group" imageUrl="/imgs/partner_logo_02.png" width={99} height={36}/>
-                <PartnerLogo partnerName="KB Financial Group" imageUrl="/imgs/partner_logo_03_bw.png" width={36} height={36}/>
+                <PartnerLogo partnerName="KB Financial Group" imageUrl="/imgs/partner_logo_03_02.png" width={36} height={36}/>
             </div>
             <div ref={secondLogoGroup} className="shrink-0 flex gap-6 px-3">
                 <PartnerLogo partnerName="KB Financial Group" imageUrl="/imgs/partner_logo_01.png" width={99} height={36}/>
                 <PartnerLogo partnerName="KB Financial Group" imageUrl="/imgs/partner_logo_02.png" width={99} height={36}/>
-                <PartnerLogo partnerName="KB Financial Group" imageUrl="/imgs/partner_logo_03_bw.png" width={36} height={36}/>
+                <PartnerLogo partnerName="KB Financial Group" imageUrl="/imgs/partner_logo_03_02.png" width={36} height={36}/>
                 <PartnerLogo partnerName="KB Financial Group" imageUrl="/imgs/partner_logo_01.png" width={99} height={36}/>
                 <PartnerLogo partnerName="KB Financial Group" imageUrl="/imgs/partner_logo_02.png" width={99} height={36}/>
-                <PartnerLogo partnerName="KB Financial Group" imageUrl="/imgs/partner_logo_03_bw.png" width={36} height={36}/>
+                <PartnerLogo partnerName="KB Financial Group" imageUrl="/imgs/partner_logo_03_02.png" width={36} height={36}/>
             </div>
             <div ref={thirdLogoGroup} className="shrink-0 flex gap-6 px-3">
                 <PartnerLogo partnerName="KB Financial Group" imageUrl="/imgs/partner_logo_01.png" width={99} height={36}/>
                 <PartnerLogo partnerName="KB Financial Group" imageUrl="/imgs/partner_logo_02.png" width={99} height={36}/>
-                <PartnerLogo partnerName="KB Financial Group" imageUrl="/imgs/partner_logo_03_bw.png" width={36} height={36}/>
+                <PartnerLogo partnerName="KB Financial Group" imageUrl="/imgs/partner_logo_03_02.png" width={36} height={36}/>
                 <PartnerLogo partnerName="KB Financial Group" imageUrl="/imgs/partner_logo_01.png" width={99} height={36}/>
                 <PartnerLogo partnerName="KB Financial Group" imageUrl="/imgs/partner_logo_02.png" width={99} height={36}/>
-                <PartnerLogo partnerName="KB Financial Group" imageUrl="/imgs/partner_logo_03_bw.png" width={36} height={36}/>
+                <PartnerLogo partnerName="KB Financial Group" imageUrl="/imgs/partner_logo_03_02.png" width={36} height={36}/>
             </div>
         </div>
     )
