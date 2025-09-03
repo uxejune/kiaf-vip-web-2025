@@ -196,8 +196,6 @@ export async function GalleryVipCancel(vipId: string, galleryId: string) {
         gallery: galleryId
     });
 
-
-
     try {
         const res = await fetch(`${process.env.NEXT_PUBLIC_SITE_URL}/api/cancel_gallery_vip`, {
             method: "POST",
@@ -208,6 +206,8 @@ export async function GalleryVipCancel(vipId: string, galleryId: string) {
             body: requestBody
         });
         const data = await res.json();
+
+        console.log('res',data );
 
         return (data)
 

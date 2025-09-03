@@ -38,6 +38,8 @@ export default function CancelVipButton({ userType = "admin", selectedVips, gall
 
         if (userType == "admin") {
             //run admin cancel
+
+
             try {
                 // Iterate through selectedVips and cancel each one
                 await Promise.all(selectedVips.map(async (vip) => {
@@ -63,16 +65,27 @@ export default function CancelVipButton({ userType = "admin", selectedVips, gall
             }
 
         } else if (userType = "gallery") {
+
+
             if (galleryId) {
                 //run gallery cancel
 
+
+
                 try {
+
+
+
                     await Promise.all(selectedVips.map(async (vip) => {
+
+                        console.log('gallery id:', galleryId)
+                        console.log('vip id:', vip.id)
+
                         await GalleryVipCancel(vip.id, galleryId)
                     }));
 
                     setIsProcessing(false); // Reset processing state on success
-                    window.location.reload();
+                    // window.location.reload();
 
                 } catch (error) {
                     console.error('Error cancelling VIPs:', error);
@@ -82,10 +95,14 @@ export default function CancelVipButton({ userType = "admin", selectedVips, gall
 
 
 
+            } else {
+
             }
 
 
 
+        } else {
+            // console.log("can't find user type");
         }
 
 
@@ -94,7 +111,7 @@ export default function CancelVipButton({ userType = "admin", selectedVips, gall
     return (
         <AlertDialog>
             <AlertDialogTrigger asChild>
-                <Button disabled={selectedVips.length === 0 || isProcessing === true || userType === "agent" } variant="destructive">Cancel</Button>
+                <Button disabled={selectedVips.length === 0 || isProcessing === true || userType === "agent"} variant="destructive">Cancel</Button>
             </AlertDialogTrigger>
             <AlertDialogContent>
                 <AlertDialogHeader>

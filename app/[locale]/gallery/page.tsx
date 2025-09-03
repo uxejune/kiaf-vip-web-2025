@@ -62,6 +62,8 @@ export default async function Page({ searchParams }: { searchParams: Promise<{ g
     const vipListBody = new URLSearchParams();
     vipListBody.append("gallery", galleryId);
 
+    
+
     const vipListRequestOptions: RequestInit = {
         method: "POST",
         headers: myHeaders,
@@ -129,7 +131,7 @@ export default async function Page({ searchParams }: { searchParams: Promise<{ g
 
     const gallery = getGalleryById(galleryId);
 
-
+    // console.log('gallery id', galleryId);
 
     if (authData.status == true) {
         return (

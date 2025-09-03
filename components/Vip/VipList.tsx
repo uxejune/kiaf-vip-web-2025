@@ -239,10 +239,14 @@ export default function VipList({ vips, listType, itemsPerPage, isAdmin = false,
                 </div>
 
                 <div className="flex gap-2">
+                    <CancelVipButton selectedVips={selectedData}/>
+
+                    {/* {galleryId ?
+                        <CancelVipButton selectedVips={selectedData} userType={userType} galleryId={galleryId} />
+                        : <CancelVipButton selectedVips={selectedData} userType={userType} />
+                    } */}
 
 
-
-                    <CancelVipButton selectedVips={selectedData} userType={userType} />
                     {/* <Button disabled={ selectedData.length === 0 } variant="destructive">초대 취소</Button> */}
 
 
