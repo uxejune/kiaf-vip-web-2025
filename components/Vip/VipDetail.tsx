@@ -18,6 +18,8 @@ import { useState } from "react";
 import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { encrypt } from "@/lib/cryption";
+import GuestInviteButton from "./GuestInviteButton";
+import GuestOverrideButton from "./GuestOverrideButton";
 
 
 interface Props {
@@ -114,7 +116,7 @@ export default function VipDetail({ vip, isAdmin = false, listType }: Props) {
                             </div>
 
 
-                            <div>
+                            <div className="space-y-4">
                                 <h3 className="font-bold">Guest</h3>
                                 {vip.guest_email || vip.guest_mobile ?
                                     <div >
@@ -139,6 +141,7 @@ export default function VipDetail({ vip, isAdmin = false, listType }: Props) {
 
                                     </div>
                                     : <Badge>None</Badge>}
+                                <GuestOverrideButton invitationCode={vip.invitation_code} />
                             </div>
 
                             <div>

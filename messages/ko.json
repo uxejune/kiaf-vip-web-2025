@@ -21,7 +21,8 @@
       "appIntroText" : "VIP 전용 앱으로 Kiaf SEOUL을 더욱 풍성하게 즐기세요.",
       "guestInvitationMessage" : "게스트 초대는 1일 1회 가능하며 (00시 기준), 새로운 초대장 발송 시 앞서 발송된 초대장은 무효화 됩니다.",
       "guestInvitationMessage2nd" : "발송 후 게스트 정보 수정이 불가능하니 초대장을 받을 수 있는 전화번호가 맞는지 확인해주세요.",
-      "expiredOrWrongInvitation" : "초대장이 만료되어 더 이상 사용이 불가능합니다.\n초대처에 문의해 주세요.",
+      "expiredOrWrongInvitation" : "초대장이 만료되어 더 이상 사용할 수 없어요.\n초대처에 문의해 주세요.",
+      "expiredOrWrongGuestInvitation" : "동반인 초대장이 만료되어 더 이상 사용할 수 없어요.\n초대처에 문의해 주세요.",
       "iosStoreMessage": "앱스토어로 이동하시겠습니까?",
       "1dayTicketMessage": "1일 입장 가능한 티켓입니다."
     },

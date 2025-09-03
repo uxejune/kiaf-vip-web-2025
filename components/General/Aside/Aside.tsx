@@ -2,7 +2,7 @@
 
 import { usePathname } from 'next/navigation'
 import SignOut from "@/components/Auth/SignOut";
-import {  PersonIcon, ImageIcon, PlayIcon, ViewGridIcon, BoxModelIcon, GearIcon } from "@radix-ui/react-icons";
+import {  PersonIcon, ImageIcon, PlayIcon, ViewGridIcon, BoxModelIcon, GearIcon, AccessibilityIcon } from "@radix-ui/react-icons";
 import * as React from 'react';
 
 import Link from "next/link";
@@ -28,6 +28,7 @@ export default function Aside({ userEmail, userRole }: { userEmail: string, user
         { url: '/admin/setting', title: 'Setting', icon: GearIcon, role: ["master", "admin"] },
         { url: '/admin/vip', title: 'VIP', icon: ViewGridIcon, role: ["master", "admin", "guestDev", "agent"] },
         { url: '/admin/partnervip', title: 'Partner VIP', icon: PersonIcon, role: ["master", "admin","agent"] },
+        { url: '/admin/guest', title: 'Guest', icon: AccessibilityIcon, role: ["master", "admin", "guestDev", "agent"] },
         { url: '/admin/docent', title: 'Admin Docent', icon: ImageIcon, role: ["master", "admin"] },
         // { url: '/admin/docent-generate', title: 'Docent Generate', icon: ImageIcon, role: ["master"] },
         { url: '/admin/rsvp', title: 'RSVP', icon: PlayIcon, role: ["master", "admin", "rsvpAgent"] },

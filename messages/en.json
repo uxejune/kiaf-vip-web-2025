@@ -21,7 +21,8 @@
     "appIntroText": "Enjoy Kiaf SEOUL with the VIP app.",
     "guestInvitationMessage" : "Guests can be invited once per day (based on midnight). When a new invitation is sent, any previous invitations will be invalidated.",
     "guestInvitationMessage2nd" : "Once sent, guest information cannot be modified. Please ensure the phone number provided for receiving the invitation is correct.",
-    "expiredOrWrongInvitation": "The invitation is either expired or invalid.",
+    "expiredOrWrongInvitation": "The invitation is either expired or invalid. Please contact the invitation issuer for assistance.",
+    "expiredOrWrongGuestInvitation" : "The guest invitation has expired and can no longer be used. Please contact the invitation issuer for assistance.",
     "iosStoreMessage": "Would you like to go to the App Store?",
     "1dayTicketMessage": "This ticket is valid for one-day admission."
   },
