@@ -165,7 +165,7 @@ export default async function Page({
         )
     } else {
         return (
-            <div className='flex flex-col justify-center items-center w-full h-screen gap-3'>
+            <div className='flex flex-col justify-center items-center w-full h-screen gap-3 p-4 text-center'>
                 <Image className='inline w-auto h-auto' src={'/imgs/kiaf_logo_black.png'} alt='kiaf logo' width={180} height={40} />
                 <p>{t("expiredOrWrongGuestInvitation")}</p>
             </div>

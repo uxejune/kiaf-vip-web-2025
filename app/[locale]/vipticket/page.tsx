@@ -103,7 +103,7 @@ export default async function Page({
 
     if (!ticketData || !ticketData.status) {
         return (
-            <div className='flex flex-col gap-3 justify-center items-center w-full h-screen'>
+            <div className='flex flex-col gap-3 justify-center items-center w-full h-screen p-4 text-center'>
                 <Image className='inline w-auto h-auto' src={'/imgs/kiaf_logo_black.png'} alt='kiaf logo' width={180} height={40} />
                 <p>{t("expiredOrWrongInvitation")}</p>
             </div>
@@ -165,17 +165,17 @@ export default async function Page({
 
 
     //check date limit
-    const supabase = await createClient();
+    // const supabase = await createClient();
 
 
 
-    const { data: dateLimitedVipInvitation, error: errorDateLimitedVipInvitation } = await supabase
-        .from("dateLimitedVipInvitation")
-        .select("*")
-        .eq("code", decryptedInvitationCode)
-        .single();
+    // const { data: dateLimitedVipInvitation, error: errorDateLimitedVipInvitation } = await supabase
+    //     .from("dateLimitedVipInvitation")
+    //     .select("*")
+    //     .eq("code", decryptedInvitationCode)
+    //     .single();
 
-    const dateLimitedVipInvitationData: DateLimitedVipInvitation | null = dateLimitedVipInvitation ?? null;
+    // const dateLimitedVipInvitationData: DateLimitedVipInvitation | null = dateLimitedVipInvitation ?? null;
 
     // console.log(dateLimitedVipInvitationData);
 
@@ -204,7 +204,7 @@ export default async function Page({
                     // dayLimitedTicketMessage={dateLimitedVipInvitationData ? t("1dayTicketMessage") : null}
                 />
 
-                {dateLimitedVipInvitationData && <p className='text-center'><span className='font-bold'>{dateLimitedVipInvitationData.date}</span><br /> {t("1dayTicketMessage")}</p>}
+                {/* {dateLimitedVipInvitationData && <p className='text-center'><span className='font-bold'>{dateLimitedVipInvitationData.date}</span><br /> {t("1dayTicketMessage")}</p>} */}
 
                 {/* <VipPartners /> */}
 
