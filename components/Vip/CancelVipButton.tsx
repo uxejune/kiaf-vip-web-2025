@@ -78,14 +78,14 @@ export default function CancelVipButton({ userType = "admin", selectedVips, gall
 
                     await Promise.all(selectedVips.map(async (vip) => {
 
-                        console.log('gallery id:', galleryId)
-                        console.log('vip id:', vip.id)
+                        // console.log('gallery id:', galleryId)
+                        // console.log('vip id:', vip.id)
 
                         await GalleryVipCancel(vip.id, galleryId)
                     }));
 
                     setIsProcessing(false); // Reset processing state on success
-                    // window.location.reload();
+                    window.location.reload();
 
                 } catch (error) {
                     console.error('Error cancelling VIPs:', error);
