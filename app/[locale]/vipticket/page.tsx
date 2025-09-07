@@ -211,7 +211,7 @@ export default async function Page({
                 <div className='px-7 w-full'>
                     <div className='border bg-background shadow rounded-3xl p-5 flex flex-col gap-4'>
 
-                        {ticketData.vip_tier === "1" &&
+                        {/* {ticketData.vip_tier === "1" &&
                             <>
 
                                 <div className='flex items-center gap-4 max-[420px]:flex-col max-[420px]:items-start'>
@@ -246,7 +246,7 @@ export default async function Page({
                                 </div>
                                 <hr className='border-neutral-200' />
                             </>
-                        }
+                        } */}
 
 
 
