@@ -120,7 +120,8 @@ export default async function Page({ searchParams }: { searchParams: Promise<{ g
     const invitedVipCount: number = vipListData.filter((vip) => vip.vip_tier === "1").length;
     const invitedSingleVipCount: number = vipListData.filter((vip) => vip.vip_tier === "2").length;
 
-    const isInviteAllowed: boolean = quota > invitedVipCount || singleQuota > invitedSingleVipCount;
+    // const isInviteAllowed: boolean = quota > invitedVipCount || singleQuota > invitedSingleVipCount;
+    const isInviteAllowed: boolean = false;
     const galleryListData = await galleryList();
 
 
