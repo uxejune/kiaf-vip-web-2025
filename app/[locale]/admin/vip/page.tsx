@@ -42,6 +42,31 @@ const vipList = async () => {
 
 const accessibleRoles = ["master", "admin", "guestDev", "agent"];
 
+// Build CSV (UTF-8) from an array of flat objects
+function objectsToCSV(rows: Record<string, any>[]): string {
+    if (!rows || rows.length === 0) return "";
+    const columnsSet = rows.reduce<Set<string>>((set, row) => {
+        Object.keys(row || {}).forEach((k) => set.add(k));
+        return set;
+    }, new Set<string>());
+    const columns = Array.from(columnsSet);
+
+    const escapeCell = (val: any) => {
+        if (val === null || val === undefined) return "";
+        const s = String(val);
+        const needsQuotes = /[",\n\r]/.test(s);
+        const escaped = s.replace(/"/g, '""');
+        return needsQuotes ? `"${escaped}"` : escaped;
+    };
+
+    const header = columns.map(escapeCell).join(",");
+    const body = rows
+        .map(row => columns.map(col => escapeCell(row?.[col])).join(","))
+        .join("\r\n");
+
+    return `${header}\r\n${body}`;
+}
+
 export default async function Page() {
     const user = await checkUserAccount();
 
@@ -92,6 +117,17 @@ export default async function Page() {
         }
     });
 
+    // Build CSV href for download
+    const csvRows: Record<string, any>[] = Array.isArray(vipListData) ? vipListData : [];
+    const csvString = objectsToCSV(csvRows);
+    const csvHref = `data:text/csv;charset=utf-8,${encodeURIComponent(csvString)}`;
+
+    const now = new Date();
+    const y = now.getFullYear();
+    const m = String(now.getMonth() + 1).padStart(2, "0");
+    const d = String(now.getDate()).padStart(2, "0");
+    const fileName = `vip_list_${y}${m}${d}.csv`;
+
 
     // console.log('vipListData :', vipListData);
 
@@ -128,6 +164,12 @@ export default async function Page() {
                                 <Link href={"/admin/vip/bulk_invite"}>Bulk Invite VIPs</Link>
                             </Button>
                         }
+
+                        
+                            <Button variant={"outline"} asChild>
+                                <a href={csvHref} download={fileName}>Download CSV</a>
+                            </Button>
+                        
 
 
                     </div>

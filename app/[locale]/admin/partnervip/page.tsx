@@ -3,6 +3,7 @@ import Aside from "@/components/General/Aside/Aside"
 import VipList from "@/components/Vip/VipList";
 import { createClient } from "@/utils/supabase/server";
 import { AdminVipInviteLog, DateLimitedVipInvitation, Vip } from "@/types/collections";
+import { Button } from "@/components/ui/button";
 
 const myHeaders = new Headers();
 myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
@@ -35,6 +36,31 @@ const partnerVipList = async () => {
 };
 
 const accessibleRoles = ["master","admin","agent"];
+
+// Build CSV (UTF-8) from an array of flat objects
+function objectsToCSV(rows: Record<string, any>[]): string {
+    if (!rows || rows.length === 0) return "";
+    const columnsSet = rows.reduce<Set<string>>((set, row) => {
+        Object.keys(row || {}).forEach((k) => set.add(k));
+        return set;
+    }, new Set<string>());
+    const columns = Array.from(columnsSet);
+
+    const escapeCell = (val: any) => {
+        if (val === null || val === undefined) return "";
+        const s = String(val);
+        const needsQuotes = /[",\n\r]/.test(s);
+        const escaped = s.replace(/"/g, '""');
+        return needsQuotes ? `"${escaped}"` : escaped;
+    };
+
+    const header = columns.map(escapeCell).join(",");
+    const body = rows
+        .map(row => columns.map(col => escapeCell(row?.[col])).join(","))
+        .join("\r\n");
+
+    return `${header}\r\n${body}`;
+}
 
 export default async function Page(){
 
@@ -85,6 +111,17 @@ export default async function Page(){
         }
     });
 
+    // Build CSV href for download
+    const csvRows: Record<string, any>[] = Array.isArray(partnerVipListData) ? partnerVipListData : [];
+    const csvString = objectsToCSV(csvRows);
+    const csvHref = `data:text/csv;charset=utf-8,${encodeURIComponent(csvString)}`;
+
+    const now = new Date();
+    const y = now.getFullYear();
+    const m = String(now.getMonth() + 1).padStart(2, "0");
+    const d = String(now.getDate()).padStart(2, "0");
+    const fileName = `partner_vip_list_${y}${m}${d}.csv`;
+
     console.log('vipListData :', partnerVipListData);
 
     return(
@@ -97,6 +134,11 @@ export default async function Page(){
                 <div className="p-4 w-full">
                     <h1 className="heading-1 mb-4">Partner VIP</h1>
                     {/* <VipList vips={data} itemsPerPage={10} /> */}
+
+                    <Button variant={"outline"} asChild>
+                        <a href={csvHref} download={fileName}>Download CSV</a>
+                    </Button>
+
                     <VipList vips={partnerVipListData} listType='partner' userType={user.role=="agent" ? "agent" : "admin" } itemsPerPage={10} isAdmin/>
                 </div>
             </div>
