@@ -3,7 +3,12 @@ import Aside from "@/components/General/Aside/Aside"
 import VipList from "@/components/Vip/VipList";
 import { createClient } from "@/utils/supabase/server";
 import { AdminVipInviteLog, DateLimitedVipInvitation, Vip } from "@/types/collections";
+
 import { Button } from "@/components/ui/button";
+
+// Types for CSV generation to avoid `any`
+type CSVPrimitive = string | number | boolean | null | undefined | Date;
+type CSVRow = Record<string, CSVPrimitive>;
 
 const myHeaders = new Headers();
 myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
@@ -38,7 +43,7 @@ const partnerVipList = async () => {
 const accessibleRoles = ["master","admin","agent"];
 
 // Build CSV (UTF-8) from an array of flat objects
-function objectsToCSV(rows: Record<string, any>[]): string {
+function objectsToCSV(rows: CSVRow[]): string {
     if (!rows || rows.length === 0) return "";
     const columnsSet = rows.reduce<Set<string>>((set, row) => {
         Object.keys(row || {}).forEach((k) => set.add(k));
@@ -46,9 +51,9 @@ function objectsToCSV(rows: Record<string, any>[]): string {
     }, new Set<string>());
     const columns = Array.from(columnsSet);
 
-    const escapeCell = (val: any) => {
+    const escapeCell = (val: CSVPrimitive): string => {
         if (val === null || val === undefined) return "";
-        const s = String(val);
+        const s = val instanceof Date ? val.toISOString() : String(val);
         const needsQuotes = /[",\n\r]/.test(s);
         const escaped = s.replace(/"/g, '""');
         return needsQuotes ? `"${escaped}"` : escaped;
@@ -112,7 +117,7 @@ export default async function Page(){
     });
 
     // Build CSV href for download
-    const csvRows: Record<string, any>[] = Array.isArray(partnerVipListData) ? partnerVipListData : [];
+    const csvRows: CSVRow[] = Array.isArray(partnerVipListData) ? (partnerVipListData as unknown as CSVRow[]) : [];
     const csvString = objectsToCSV(csvRows);
     const csvHref = `data:text/csv;charset=utf-8,${encodeURIComponent(csvString)}`;
 

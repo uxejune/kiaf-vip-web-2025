@@ -8,6 +8,10 @@ import Link from "next/link";
 import { createClient } from "@/utils/supabase/server";
 import { AdminVipInviteLog, DateLimitedVipInvitation, Vip } from "@/types/collections";
 
+// Types to avoid `any` in CSV building
+type CSVPrimitive = string | number | boolean | null | undefined | Date;
+type CSVRow = Record<string, CSVPrimitive>;
+
 const myHeaders = new Headers();
 myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
 
@@ -41,7 +45,7 @@ const cancelledVipList = async (): Promise<Vip[] | { data: Vip[] }> => {
 
 
 // Build CSV (UTF-8) from an array of flat objects
-function objectsToCSV(rows: Record<string, any>[]): string {
+function objectsToCSV(rows: CSVRow[]): string {
     if (!rows || rows.length === 0) return "";
     const columnsSet = rows.reduce<Set<string>>((set, row) => {
         Object.keys(row || {}).forEach((k) => set.add(k));
@@ -49,10 +53,9 @@ function objectsToCSV(rows: Record<string, any>[]): string {
     }, new Set<string>());
     const columns = Array.from(columnsSet);
 
-    const escapeCell = (val: any) => {
+    const escapeCell = (val: CSVPrimitive): string => {
         if (val === null || val === undefined) return "";
-        const s = String(val);
-        // escape " by doubling it
+        const s = val instanceof Date ? val.toISOString() : String(val);
         const needsQuotes = /[",\n\r]/.test(s);
         const escaped = s.replace(/"/g, '""');
         return needsQuotes ? `"${escaped}"` : escaped;
@@ -67,7 +70,10 @@ function objectsToCSV(rows: Record<string, any>[]): string {
 }
 
 function hasDataArray(x: unknown): x is { data: Vip[] } {
-    return typeof x === "object" && x !== null && Array.isArray((x as any).data);
+    if (typeof x !== "object" || x === null) return false;
+    if (!("data" in x)) return false;
+    const maybe = x as { data: unknown };
+    return Array.isArray(maybe.data);
 }
 
 const accessibleRoles = ["master", "admin", "guestDev", "agent"];
@@ -133,7 +139,7 @@ export default async function Page() {
 
 
 
-    const csvString = objectsToCSV(canceledRows as Record<string, any>[]);
+    const csvString = objectsToCSV(canceledRows as unknown as CSVRow[]);
     const csvHref = `data:text/csv;charset=utf-8,${encodeURIComponent(csvString)}`;
 
     const now = new Date();
